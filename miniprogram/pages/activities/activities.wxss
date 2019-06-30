@@ -1,0 +1,84 @@
+.head {
+  background-color: #f76968;
+}
+
+.selpoi {
+  
+  font-size: 14px;
+  margin:0 26rpx;
+  color: white;
+}
+
+.search-rad {
+  height: 56rpx;
+  background-color: white;
+  border-radius: 20rpx;
+  flex: 1;
+  margin: 0 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.activity {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #dcdcdc;
+  margin-left: 22rpx;
+}
+
+.list-item-title{
+  font-size:30rpx; 
+  color:#4a4a4a;
+}
+
+.list-item-content{
+  font-size:24rpx; 
+  color:#686868;
+  //white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
+}
+
+.intro-warp {
+  margin: 0 22rpx;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  height: 172rpx;
+}
+
+.intro {
+  display: flex;
+  flex-flow: column wrap;
+  width: 420rpx;
+  justify-content: space-around;
+  margin-right:10rpx;
+}
+
+.signup {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: start;
+}
+
+.pre {
+  border: 1rpx solid #12a2f1;
+  color: #12a2f1;
+}
+
+.singed {
+  color: #cf8b95;
+  font-size: 26rpx;
+  margin-bottom:5rpx;
+}
+
+.bottom-hint{
+  margin-top:10rpx;
+  color:#999;
+  text-align:center;
+  font-size:30rpx;
+}

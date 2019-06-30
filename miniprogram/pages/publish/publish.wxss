@@ -1,0 +1,15 @@
+@import "/pages/activities/detail/detail.wxss";
+
+.img-del{
+  position:absolute;
+  top:0px;
+}
+
+.add-resource{
+  position: fixed;
+  right: 20rpx;
+  bottom: 120rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

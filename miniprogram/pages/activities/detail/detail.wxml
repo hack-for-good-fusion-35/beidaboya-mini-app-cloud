@@ -1,0 +1,94 @@
+<image src="{{activity.images[0]}}" class="filter"></image>
+<view class="head">
+  <view class="cover">
+    <navigator url="" class="playUrl">
+      <image src="{{activity.images[0]}}" style="width:290rpx;height:290rpx;"></image>
+    </navigator>
+    <view class="jianjie">
+      <view>
+        <view class="mTitle">{{activity.title}}</view>
+        <view class="enName">{{activity.organizer.name}}</view>
+      </view>
+      <view class="rater">
+        <!-- <view class="space">
+          <view class="subject">报名人数</view>
+          <text class="rateN">{{activity.participants.length}}</text>
+          <text class="rateN">({{activity.rating[1][0]}}人参加)</text>
+        </view> -->
+        <view>
+          <view class="subject">活动日期</view>
+          <text class="rateN">{{activity.startDate}} ~ {{activity.endDate}}</text>
+        </view>
+      </view>
+      <view>
+        <view>
+          <view class="subject">活动状态</view>
+          <text class="rateN">{{activity.statusText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- <view class="control">
+    <view class="islooked like">想参加</view>
+    <navigator url="" class="like">评分</navigator>
+  </view> -->
+</view>
+<view catchtap="flex">
+  <view class="tBar" style="background-color:white;margin:0px;padding:28rpx 0 20rpx 28rpx;" >活动简介</view>
+  <view class="description {{flexed?'':'flex'}}">{{activity.description}}</view>
+  <view class="arrow {{flexed?'uparrow':'downarrow'}}"></view>
+</view>
+<view class="warp" >
+  <navigator class="tBar" url="../../signed-list/signed-list?id={{activity.id}}" >
+    <view>已报名人员</view>
+    <view class="participants-number">{{activity.participants.length}} 人已参加</view>
+  </navigator>
+  <scroll-view scroll-x style="width:100%">
+    <view class="participants">
+      <view wx:for="{{activity.participants}}" wx:key="{{participants}}" class="acItem">
+        <image src="{{item.avatarUrl}}" style="width:134rpx;height:134rpx;margin-bottom:18rpx;"></image>
+        <view class="textOver">{{item.nickName}}</view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+<view class="warp" style="height:278rpx;">
+  <view class="tBar">
+    <view>活动照片</view>
+    <view class="activities-number">{{activity.images.length}}</view>
+  </view>
+  <scroll-view scroll-x class="scr-H">
+    <view class="spa scr-H-item"></view>
+    <navigator class="img-item scr-H-item" url="" wx:for="{{activity.images}}" wx:key="{{images}}" hover-class="none">
+      <image src="{{item}}" class="{{index==0?'long':'short'}}"></image>
+    </navigator>
+    <view class="spa scr-H-item"></view>
+  </scroll-view>
+</view>
+<!-- <view class="participant">
+  <view class="mark-head">
+    <view class="au-mark">参加者评论</view>
+    <navigator url="" class="my-mark">我的短评</navigator>
+  </view>
+  <view>
+    <view wx:for="{{activity.pinlun.participant}}" class="participant-item">
+      <view class="avatarUrl">
+        <image src="{{item.avatarUrl}}" style="width:58rpx;height:58rpx; border-radius: 50%;"></image>
+      </view>
+      <view class="participantD">
+        <view>
+          <view class="nickName">{{item.nickName}}</view>
+          <view></view>
+        </view>
+        <view class="pWord">{{item.pWord}}</view>
+        <view class="dToa">
+          <view>{{item.date}}</view>
+          <view style="margin-right:36rpx;">{{item.admire}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <navigator url=""></navigator>
+</view> -->
+<navigator url="../../signup/signup?title={{activity.title}}&id={{activity.id}}" class="signup">立即报名</navigator>
+<view style="height:100px;"></view>

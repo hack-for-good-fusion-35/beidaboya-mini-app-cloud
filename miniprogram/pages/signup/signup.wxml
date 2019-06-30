@@ -1,0 +1,67 @@
+<!-- <import src="../../common/templates/mm-radio.wxml" /> -->
+<!-- <import src="../../common/template/address-picker.wxml" /> -->
+<view>
+    <form name="signupForm" novalidate>
+        <view class="form-edit">
+	        <view class="form-view">
+	            <text>报名人</text>
+	            <input name="name" maxlength="15" placeholder="请输入姓名" placeholder-style="color: #A0A0A0" value="{{name}}" bindinput="nameInput" />
+	        </view>
+			<view class="form-view">
+	            <text>性别</text>
+	            <input name="gender" maxlength="1" placeholder="请输入性别" placeholder-style="color: #A0A0A0" value="{{gender}}" bindinput="genderInput" />
+	        </view>
+			<view class="form-view">
+	            <text>年龄</text>
+	            <input name="age" maxlength="2" placeholder="请输入年龄" placeholder-style="color: #A0A0A0" value="{{age}}" bindinput="ageInput" />
+	        </view>
+			<view class="form-view">
+	            <text>手机号码</text>
+	            <input name="mobile" type="text" maxlength="11" placeholder="请输入11位手机号码" bindtap="" value="{{mobile}}" bindinput="mobileInput" />
+	            <view wx:if="{{isClear}}" bindtap="{{mobile}}==''" class="input-clear"></view>
+	        </view>
+			<view class="form-view">
+	            <text>职业</text>
+	            <input name="job" maxlength="2" placeholder="请输入职业" placeholder-style="color: #A0A0A0"  value="{{job}}" bindinput="jobInput" />
+	        </view>
+			<view class="form-view">
+	            <text>身份证号</text>
+	            <input name="nationalId" maxlength="18" placeholder="请输入身份证号" placeholder-style="color: #A0A0A0"  value="{{nationalId}}" bindinput="nationalIdInput" />
+	        </view>
+			<view class="form-view">
+	            <text>政治面貌</text>
+	            <input name="politicalStatus" maxlength="18" placeholder="请输入政治面貌" placeholder-style="color: #A0A0A0"  value="{{politicalStatus}}" bindinput="politicalStatusInput" />
+	        </view>
+	       	<!-- <view class="form-view">
+	            <text>省市地址</text>
+	        
+	            <template is="address-picker" 
+data="{{provinceIndex:addressSelect.provinceIndex,cityIndex:addressSelect.cityIndex,districtIndex:addressSelect.districtIndex,province:addressSelect.province,city:addressSelect.city[addressSelect.selectedProvince],district:addressSelect.district[addressSelect.selectedCity]}}">
+				</template>
+
+	        </view> -->
+			<view class="form-view">
+	            <text>所属社区居委</text>
+	            <input type="text" maxlength="60" placeholder="请输入所属社区居委" value="{{liveCommittee}}" bindinput="liveCommitteeInput" />
+	        </view>
+
+	        <view class="form-view">
+	            <text>个人地址</text>
+	            <input type="text" maxlength="60" placeholder="请输入详细个人地址" value="{{address}}" bindinput="addressInput" />
+	        </view>
+	    </view>
+
+	   	<!-- <view class="operation">
+	   		<template is="mm-radio" data="{{...items}}"></template>
+	    </view> -->
+	   	<view class="btnBox">
+	    	<button class="submit-btn" bindtap="submitBtn">
+	        	<text>确认报名</text>
+	    	</button>
+	    </view>
+    </form>
+</view>
+
+<view mm-loading-animation ng-if="loading"></view>
+
+<!-- <template is="city" data="{{...array}}"></template> -->

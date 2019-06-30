@@ -1,0 +1,47 @@
+<view class="head">
+  <SearchBar 
+    id="SearchBar" addflag="{{addflag}}" addimg="{{addimg}}" bind:addhandle="addhandle" 
+    searchstr="{{searchstr}}" bind:searchList="searchList" bind:endsearchList="endsearchList" 
+    bind:cancelsearch="cancelsearch" bind:activity_clear="activity_clear">
+  </SearchBar>
+</view>
+
+
+<!-- <swiper style="height:150rpx;" autoplay="true" interval="2000" circular="true">
+  <block wx:for="{{indexData.swiperImg}}" wx:key="*this">
+    <swiper-item>
+      <image src="{{item}}" style="height:100%;width:100%;"></image>
+    </swiper-item>
+  </block>
+</swiper> -->
+
+<block wx:for="{{indexData.activities}}" wx:key="keys">
+  <navigator url="/pages/activities/detail/detail?title={{item.title}}&_id={{item._id}}">
+    <view style="height:216rpx;" class="activity">
+      <image src="{{item.images[0]}}" style="height:172rpx;width:200rpx;"></image>
+      <view class="intro-warp">
+        <view style="font-size:12px" class="intro">
+          <view class="list-item-title" >{{item.title}}</view>
+          <view class="list-item-content"><span>地址:</span>{{item.address}}</view>
+          <view class="list-item-content"><span>活动内容:</span></view>
+          <view class="list-item-content">{{item.description}}</view>
+        </view>
+        <view class="signup">
+        
+          <view class="singed" >
+            <text>剩余名额:{{item.participants.length}}</text>
+          </view>
+          <view class="singed" >
+            <navigator url="/pages/signup/signup?title={{item.title}}&id={{item._id}}" class="btn" >报名</navigator>
+          </view>
+          <view class="singed" >
+            <navigator url="/pages/publish/publish?_id={{item._id}}" class="btn" >编辑</navigator>
+          </view>
+
+        </view>
+      </view>
+    </view>
+  </navigator>
+</block>
+
+<view class="bottom-hint" hidden="{{!runOutOfData}}" >已经没有更多的数据</view>
