@@ -59,6 +59,9 @@
 }
 
 .signup {
+  position:absolute;
+  right:20rpx;
+  bottom:20rpx;
   display: flex;
   flex-flow: column;
   justify-content: space-around;

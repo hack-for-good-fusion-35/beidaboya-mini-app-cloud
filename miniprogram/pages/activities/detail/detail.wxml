@@ -43,10 +43,10 @@
     <view>已报名人员</view>
     <view class="participants-number">{{activity.participants.length}} 人已参加</view>
   </navigator>
-  <scroll-view scroll-x style="width:100%">
+  <scroll-view scroll-x style="width:100%;height:125rpx;margin:10rpx">
     <view class="participants">
       <view wx:for="{{activity.participants}}" wx:key="{{participants}}" class="acItem">
-        <image src="{{item.avatarUrl}}" style="width:134rpx;height:134rpx;margin-bottom:18rpx;"></image>
+        <image src="{{item.avatarUrl}}" style="width:100rpx;height:100rpx;margin-bottom:5rpx;"></image>
         <view class="textOver">{{item.nickName}}</view>
       </view>
     </view>
@@ -90,5 +90,5 @@
   </view>
   <navigator url=""></navigator>
 </view> -->
-<navigator url="../../signup/signup?title={{activity.title}}&id={{activity.id}}" class="signup">立即报名</navigator>
+<navigator url="../../signup/signup?title={{activity.title}}&id={{activity._id}}" class="signup">立即报名</navigator>
 <view style="height:100px;"></view>

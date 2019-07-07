@@ -82,22 +82,26 @@ Page({
       formFields:formFields,
       activityId: params.id
     });       
+
+    if(!this.data.activityId){
+      wx.showToast({
+        icon:'none',
+        title: '无法获取活动ID'
+      });
+    }
   },
   submitBtn() {  
     var participant = this.data.form;
-    // if (!participant.name) { that.showToast('报名人姓名不能为空'); return; }
-    // if (!participant.gender) { that.showToast('报名人性别'); return; }
-    // if (participant.name.length < 2) { that.showToast('报名人姓名限制为2~15个字符'); return; }
-    // if (!participant.mobile) { that.showToast('手机号不能为空'); return; }
-    // if (!/^1[3|4|5|7|8]\d{9}$/.test(participant.mobile)) { that.showToast('手机格式有误，请重新输入'); return; }
-    // //if (participant.city.provinceIndex == 0) { that.showToast('省市地址不能为空'); return; }
-    // if (!participant.address) { that.showToast('街道地址不能为空'); return; }
-    // if (participant.address.length < 5) { that.showToast('街道地址字数必须在5~60之间'); return; }
-
-    // province: participant.addressSelect.provinceIdx[participant.addressSelect.provinceIndex],
-    // city: participant.addressSelect.cityIdx[participant.addressSelect.provinceIndex][participant.addressSelect.cityIndex],
-    // county: participant.addressSelect.districtIdx[participant.addressSelect.cityIdx[participant.addressSelect.provinceIndex][participant.addressSelect.cityIndex]][participant.addressSelect.districtIndex],
-
+    
+    try{
+      util.validateForm(participant,formFields);
+    }catch(message){
+      wx.showToast({
+        icon:'none',
+        title: message
+      });
+      return;
+    }
 
     if(!participant._id){
       wx.showToast({
@@ -119,14 +123,23 @@ Page({
           });
 
           setTimeout(function(){
-            var pages = getCurrentPages();
-            pages[pages.length-2].onLoad({
-              id:this.data.activityId
-            });
+            let pages = getCurrentPages();
+
+            let prevPage = pages[ pages.length - 2 ];
+
+            if(prevPage.data.activity&&prevPage.data.activity.participants){
+              prevPage.data.activity.participants.push(participant);
+              prevPage.setData({ 
+                id:this.data.activityId,
+                activity : prevPage.data.activity
+              });
+            }
+            
+  
             wx.navigateBack({
               delta: 1
             })
-          }.bind(this),2000)
+          }.bind(this),1000)
           
           return participant;
         }else{
@@ -149,6 +162,7 @@ Page({
       });
     }.bind(this)).then(function(participant){
       userService.updateIfDiff(participant);
+      return participant;
     });
 
 

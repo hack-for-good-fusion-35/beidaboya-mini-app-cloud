@@ -149,10 +149,11 @@ page {
 }
 
 .acItem {
-  width: 134rpx;
+  width: 80rpx;
+  height: 110rpx;
   display: flex;
   flex-flow: column;
-  margin: 0 7rpx 34rpx;
+  margin: 0 7rpx 0rpx;
   font-size: 22rpx;
   align-items: center;
 }

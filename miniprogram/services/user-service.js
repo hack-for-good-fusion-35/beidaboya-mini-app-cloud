@@ -22,10 +22,7 @@ class UserService{
     return app.globalData.userInfo && app.globalData.userInfo.type && app.globalData.userInfo.type==SUPER_ADMIN;
   }
 
-
-
   setUserInfo(userInfo){
-    
     let openid = app.globalData.openid;
     return this.find({
       _id: openid
@@ -35,16 +32,17 @@ class UserService{
         userInfo.type=NORMAL_USER;
         return this.add(userInfo);//用户第一次授权会在数据中添加一条信息
       }
-      return userInfos[0];
+      userInfo = userInfos[0];
+      console.info('获取到用户信息'+userInfo);
+      app.globalData.userInfo=userInfo;
+      event.emit('setUserInfo',userInfo);
+      return userInfo;
     }.bind(this)).catch(function(){
       wx.showToast({
         icon: 'none',
         title: '无法获取用户信息'
       });
-    }).then(function(userInfo){
-      app.globalData.userInfo=userInfo;
-      event.emit('setUserInfo',userInfo);
-    }.bind(this));
+    });
   }
 
   updateIfDiff(userInfo){

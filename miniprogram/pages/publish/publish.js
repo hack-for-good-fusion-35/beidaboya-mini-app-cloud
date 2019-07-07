@@ -93,13 +93,16 @@ Page({
   submitBtn() {
     const that = this;
     var activity = this.data.form;
-    if (!activity.title) { 
+    try{
+      util.validateForm(activity,formFields);
+    }catch(message){
       wx.showToast({
         icon:'none',
-        title: '活动名称不能为空'
+        title: message
       });
-      return; 
+      return;
     }
+
     activityService.save(activity).then(function(response){
         wx.showToast({
           icon: 'none',

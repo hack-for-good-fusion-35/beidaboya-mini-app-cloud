@@ -17,18 +17,19 @@ var pageConfig = {
   },
   onLoad: function() {
     this.data.runOutOfData=false;
-    this.loadActivities();
-
-    event.on('setUserInfo',this,function(){
-      this.setData({
-        isAdmin:userService.isAdmin()
-      });
-    }.bind(this));
-
+    if(app.globalData.userInfo){
+      this.initPage();
+    }else{
+      event.on('setUserInfo',this,function(){
+        this.initPage();
+      }.bind(this));  
+    } 
+  },
+  initPage:function(){
     this.setData({
       isAdmin:userService.isAdmin()
     });
-       
+    this.loadActivities();
   },
   loadActivities:function(){
     activityService.find(this.data.condition,this.data.start, this.data.counts).then(function(response) {
@@ -50,8 +51,7 @@ var pageConfig = {
   onReachBottom: function() {
     if(!this.data.runOutOfData){
       this.loadActivities();
-    }
-    
+    } 
   }
 }
 

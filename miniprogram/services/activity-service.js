@@ -41,7 +41,7 @@ class ActivityService {
   }
 
   find(condition,start,count) {
-    return new Promise(function (resolve) {
+    return new Promise(function (resolve,reject) {
       //resolve([]);
       const db = wx.cloud.database()
       let search = db.collection('activities');
@@ -79,6 +79,22 @@ class ActivityService {
           }
         }
     });
+  }
+
+  findParticipants(condition){
+    return new Promise(function (resolve,reject) {
+      const db = wx.cloud.database()
+      let search = db.collection('signup_records');
+      return search.where(condition).get({
+        success: function(res){
+            resolve(res.data);
+        }.bind(this),
+        fail: err => {
+          console.error('[数据库] [查询记录] 失败：', err);
+          reject(err);
+        }
+      })
+    }.bind(this))
   }
 
   save(activity){

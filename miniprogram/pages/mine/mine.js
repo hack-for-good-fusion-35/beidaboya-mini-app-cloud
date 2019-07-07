@@ -2,6 +2,7 @@
 //获取应用实例
 const app = getApp()
 const userService = require('/../../services/user-service')
+const event = require('/../../utils/event')
 
 Page({
   data: {
