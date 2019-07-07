@@ -34,7 +34,8 @@
           <view class="singed" >
             <navigator url="/pages/signup/signup?title={{item.title}}&id={{item._id}}" class="btn" >报名</navigator>
           </view>
-          <view class="singed" >
+
+          <view class="singed" wx:if="{{isAdmin}}" >
             <navigator url="/pages/publish/publish?_id={{item._id}}" class="btn" >编辑</navigator>
           </view>
 

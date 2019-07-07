@@ -90,7 +90,7 @@ class ActivityService {
   }
 
   add(activity) {
-    return new Promise(function(resolve){
+    return new Promise(function(resolve,reject){
       const db = wx.cloud.database()
       db.collection('activities').add({
         data: activity,
@@ -122,21 +122,46 @@ class ActivityService {
           resolve(activity);
         },
         fail: err => {
+          console.error('[数据库] [更新记录] 失败：', err)
           reject(err);
         }
       })
     });
   }
 
-  signup(id,userInfo){
-    this.mockData[0].participants.push(userInfo);
+  signup(activityId,participant){
+    return new Promise(function(resolve,reject){
+      const db = wx.cloud.database()
 
-    return new Promise(function (resolve) {
-      resolve({
-        success:true,
-        message:"报名成功"
-      });
-    }.bind(this))
+      const singnupRecord = _.extend({},{activityId:activityId},participant);
+      singnupRecord._id = undefined;
+      singnupRecord.userId = participant._id;
+      singnupRecord.languare = undefined;
+      singnupRecord.type = undefined;
+      singnupRecord._openid = undefined;
+
+      db.collection('signup_records').add({
+        data: singnupRecord,
+        success: res => {
+          if(res._id){
+            resolve({
+              success:true,
+              message:'用户'+participant.name+'报名成功'
+            })
+          }
+        },
+        fail: err => {
+          let message = '报名失败';
+          if(err.errCode==-502001){
+            message = '用户[ '+participant.name+' ]已经报名该活动，无法重复报名'
+          }
+          reject({
+            success:false,
+            message:message
+          })
+        }
+      })
+    });
   }
 
   getTypes(){

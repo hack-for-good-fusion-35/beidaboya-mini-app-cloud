@@ -1,6 +1,6 @@
 const app = getApp()
-const activityService = require('/../../services/activity-service.js')
-
+const activityService = require('/../../services/activity-service')
+const userService = require('/../../services/user-service')
 var event = require('../../utils/event')
 
 var pageConfig = {
@@ -18,6 +18,17 @@ var pageConfig = {
   onLoad: function() {
     this.data.runOutOfData=false;
     this.loadActivities();
+
+    event.on('setUserInfo',this,function(){
+      this.setData({
+        isAdmin:userService.isAdmin()
+      });
+    }.bind(this));
+
+    this.setData({
+      isAdmin:userService.isAdmin()
+    });
+       
   },
   loadActivities:function(){
     activityService.find(this.data.condition,this.data.start, this.data.counts).then(function(response) {

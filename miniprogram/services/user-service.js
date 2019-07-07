@@ -1,25 +1,28 @@
 const _ = require('../utils/lodash.js')
 const util = require('../utils/util.js')
+const event = require('../utils/event')
 
 const app = getApp()
 
-var SUPER_ADMIN=0;
-var ADMIN=1;
-var NORMAL_USER=2;
+var SUPER_ADMIN=1;
+var ADMIN=2;
+var NORMAL_USER=3;
 
 class UserService{
 
   constructor(){
-
+    
   }
 
   isAdmin(){
-    return this.type==ADMIN;
+    return app.globalData.userInfo && app.globalData.userInfo.type && app.globalData.userInfo.type!=NORMAL_USER;
   }
 
   isSuperAdmin(){
-    return this.type==SUPER_ADMIN;
+    return app.globalData.userInfo && app.globalData.userInfo.type && app.globalData.userInfo.type==SUPER_ADMIN;
   }
+
+
 
   setUserInfo(userInfo){
     
@@ -40,20 +43,41 @@ class UserService{
       });
     }).then(function(userInfo){
       app.globalData.userInfo=userInfo;
-    });
+      event.emit('setUserInfo',userInfo);
+    }.bind(this));
   }
 
-  updateIfDiff(userInfo,oldUserInfo){
+  updateIfDiff(userInfo){
     return new Promise(function(resolve,reject){
-        if(util.diff(userInfo,oldUserInfo)){
-          this.update(userInfo);
+        let diffFields = util.diff(userInfo,app.globalData.userInfo)
+        if(!_.isEmpty(diffFields)){
+          this.update(userInfo,diffFields);
         }
     }.bind(this)); 
   }
 
-  update(userInfo){
+  update(userInfo,updateFields){
+
+    if(!updateFields){
+      updateFields = userInfo
+    }
+
+    const updateUserInfo=_.clone(updateFields);
+    updateUserInfo._openid=undefined;
+    updateUserInfo._id=undefined;
     return new Promise(function(resolve,reject){
-      resolve(userInfo);
+      const db = wx.cloud.database();
+      db.collection('users').doc(userInfo._id).update({
+        data: updateUserInfo,
+        success: res => {
+          app.globalData.userInfo=userInfo;
+          resolve(userInfo);
+        },
+        fail: err => {
+          console.error('[数据库] [更新记录] 失败：', err)
+          reject(err);
+        }
+      })
     });
   }
 
@@ -79,17 +103,17 @@ class UserService{
 
   find(condition){
     return new Promise(function(resolve,reject){
-      resolve([{}]);
-      // const db = wx.cloud.database()
-      // return db.collection('users').where(condition).get({
-      //   success: function(res){
-      //       resolve(res.data);
-      //   }.bind(this),
-      //   fail: err => {
-      //     console.error('[数据库] [查询记录] 失败：', err);
-      //     reject(err);
-      //   }
-      // })
+      //resolve([{}]);
+      const db = wx.cloud.database()
+      return db.collection('users').where(condition).get({
+        success: function(res){
+            resolve(res.data);
+        }.bind(this),
+        fail: err => {
+          console.error('[数据库] [查询记录] 失败：', err);
+          reject(err);
+        }
+      })
     });
   }
 

@@ -1,7 +1,8 @@
 const app = getApp();
-
-// import city from '../../common/lib/city';
-const activityService = require('/../../services/activity-service.js')
+const util = require('/../../utils/util')
+const _ = require('/../../utils/lodash')
+const activityService = require('/../../services/activity-service')
+const userService = require('/../../services/user-service')
 
 const formFields = [{
   name:'name',
@@ -9,6 +10,12 @@ const formFields = [{
   validates:['not-empty']
 },{
   name:'gender',
+  type:'picker',
+  values:[
+    {value:1,text:'男'},
+    {value:2,text:'女'}
+  ],
+  text:'请选择报名人性别',
   description:'报名人性别',
   validates:['not-empty']
 },{
@@ -18,7 +25,7 @@ const formFields = [{
 },{
   name:'mobile',
   description:'报名人电话',
-  validates:['not-empty']
+  validates:['not-empty','phone']
 },{
   name:'job',
   description:'报名人职业',
@@ -26,9 +33,26 @@ const formFields = [{
 },{
   name:'nationalId',
   description:'报名人身份证号',
-  validates:['not-empty']
+  validates:['not-empty','nationalId']
 },{
   name:'politicalStatus',
+  type:'picker',
+  values:[
+    {value:13,text:'群众（普通居民）'},
+    {value:1,text:'中共党员'},
+    {value:2,text:'中共预备党员'},
+    {value:3,text:'共青团员'},
+    {value:4,text:'民革党员'},
+    {value:5,text:'民盟盟员'},
+    {value:6,text:'民建会员'},
+    {value:7,text:'民进会员'},
+    {value:8,text:'农工党党员'},
+    {value:9,text:'致公党党员'},
+    {value:10,text:'九三学社社员'},
+    {value:11,text:'台盟盟员'},
+    {value:12,text:'无党派人士'} 
+  ],
+  text:'请选择报名人政治面貌',
   description:'报名人政治面貌',
   validates:['not-empty']
 },{
@@ -44,57 +68,24 @@ const formFields = [{
 Page({
   data: {
     activityId:'',
+    formFields:formFields,
     loading: true,
-    form: {
-      mobile: '',
-      // country: '',
-      address: '',
-    },
-    // items: {
-    //   labelText: '设置为默认',
-    //   iconType: 'circle',
-    //   is_default: false
-    // },
-    index: 0,
-    tipsData: {
-      title: '',
-      isHidden: true
-    }
-  },
-  setDefault() {
-    const isDefault = this.data.items.is_default;
-    const iconColor = !this.data.items.is_default ? '#FF2D4B' : '';
-
-    this.setData({
-      items: {
-        labelText: '设置为默认',
-        iconType: !isDefault ? 'success' : 'circle',
-        is_default: !isDefault,
-        iconColor
-      }
-    });
+    canSubmit:true
   },
   onLoad(params) {
-    formFields.forEach(function(field){
-      this[field.name+'Input'] = function(e){
-        var key = field.name;
-        this.data['form'][key] = e.detail.value;
-      }
-    }.bind(this))    
+    var participant = _.clone(app.globalData.userInfo);
 
-    this.setData({ activityId: params.id });
- 
-    // if (options.id) {
-      
-    // } else {
-    //     city.init(this);
-    // }
-     
+    util.initForm(this,participant,formFields);
+  
+    this.setData({
+      form:participant,
+      formFields:formFields,
+      activityId: params.id
+    });       
   },
-  submitBtn() {
-    const that = this;
+  submitBtn() {  
     var participant = this.data.form;
-    if (!participant.name) { that.showToast('报名人姓名不能为空'); return; }
+    // if (!participant.name) { that.showToast('报名人姓名不能为空'); return; }
     // if (!participant.gender) { that.showToast('报名人性别'); return; }
     // if (participant.name.length < 2) { that.showToast('报名人姓名限制为2~15个字符'); return; }
     // if (!participant.mobile) { that.showToast('手机号不能为空'); return; }
@@ -107,15 +98,25 @@ Page({
     // city: participant.addressSelect.cityIdx[participant.addressSelect.provinceIndex][participant.addressSelect.cityIndex],
     // county: participant.addressSelect.districtIdx[participant.addressSelect.cityIdx[participant.addressSelect.provinceIndex][participant.addressSelect.cityIndex]][participant.addressSelect.districtIndex],
 
-    let userInfo = app.globalData.userInfo;
-    participant.nickName = userInfo.nickName;
-    participant.avatarUrl = userInfo.avatarUrl;
 
-    console.info(userInfo)
+    if(!participant._id){
+      wx.showToast({
+        icon:'none',
+        title: '没有读取到用户'
+      });
+      return;
+    }
+  
+    this.setData({
+      canSubmit:false
+    })
 
     activityService.signup(this.data.activityId,participant).then(function(response){
         if (response.success){
-          that.showToast('报名成功');
+          wx.showToast({
+            icon:'none',
+            title: '报名成功'
+          });
 
           setTimeout(function(){
             var pages = getCurrentPages();
@@ -125,16 +126,29 @@ Page({
             wx.navigateBack({
               delta: 1
             })
-          }.bind(this),1000)
+          }.bind(this),2000)
           
-          // wx.navigateTo({
-          //   url: '/pages/activities/detail/detail?id='+this.data.activityId,participant
-          // })
+          return participant;
         }else{
-          that.showToast('报名失败'+response.message);
+          wx.showToast({
+            icon:'none',
+            title: '报名失败'+(err.message?',原因：'+err.message:'')
+          });
+
+          this.setData({
+            canSubmit:true
+          });
         }
-    }.bind(this)).catch(function(){
-      that.showToast('报名失败');
+    }.bind(this)).catch(function(err){
+      wx.showToast({
+        icon:'none',
+        title: '报名失败'+(err.message?',原因：'+err.message:'')
+      });
+      this.setData({
+        canSubmit:true
+      });
+    }.bind(this)).then(function(participant){
+      userService.updateIfDiff(participant);
     });
 
 
