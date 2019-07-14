@@ -155,6 +155,7 @@ class ActivityService {
       singnupRecord.languare = undefined;
       singnupRecord.type = undefined;
       singnupRecord._openid = undefined;
+      singnupRecord.attended=false;
 
       db.collection('signup_records').add({
         data: singnupRecord,
@@ -175,6 +176,28 @@ class ActivityService {
             success:false,
             message:message
           })
+        }
+      })
+    });
+  }
+
+  signout(_id){
+    return new Promise(function(resolve,reject){
+      const db = wx.cloud.database()
+
+      db.collection('signup_records').doc(_id).remove({
+        success: res => {
+          resolve({
+            success:true,
+            message:'成功'
+          });
+        },
+        fail: err => {
+          let message = '失败';
+          reject({
+            success:false,
+            message:message
+          });
         }
       })
     });

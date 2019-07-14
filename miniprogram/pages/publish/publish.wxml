@@ -66,10 +66,10 @@
 			</view> -->
 			<scroll-view scroll-x class="scr-H">
 				<view class="spa scr-H-item"></view>
-				 <view class="img-item scr-H-item"  wx:for="{{form.images}}" wx:key="{{imagesKey}}" hover-class="none">
-					<image bindtap="imgPreview" src="{{item}}" data-list="{{form.images}}" data-src="{{oneImg}}" class="{{index==0?'long':'short'}}"></image>
-					<button id="{{item}}" bindtap="delImg" style="width:60rpx;" class="btn img-del">删除</button>
-				</view> 
+					<view class="img-item scr-H-item"  wx:for="{{form.images}}" wx:key="{{imagesKey}}" hover-class="none">
+						<image bindtap="imgPreview" src="{{item}}" data-list="{{form.images}}" data-src="{{oneImg}}" class="{{index==0?'long':'short'}}"></image>
+						<button id="{{item}}" bindtap="delImg" style="width:60rpx;" class="btn img-del">删除</button>
+					</view> 
 				<view class="spa scr-H-item"></view>
 			</scroll-view> 
 		</view>
@@ -79,7 +79,7 @@
 	    </view> -->
 	   	<view class="btnBox">
 	    	<button class="submit-btn" bindtap="submitBtn">
-	        	<text>发布活动</text>
+	        	<text>保存活动</text>
 	    	</button>
 	    </view>
     </form>

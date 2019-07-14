@@ -66,7 +66,12 @@ Page({
     }
   },
   onLoad(params) {
+
     if(params && params._id){
+      wx.showLoading({
+        title: '正在获取活动信息',
+      });
+
       activityService.getById(params._id).then(function(activity){
         this.setData({
           form:activity
@@ -78,6 +83,8 @@ Page({
         this.setData({
           formFields:formFields
         });
+
+        wx.hideLoading();
   
       }.bind(this)).catch(function(err){
           wx.showToast({
@@ -106,7 +113,7 @@ Page({
     activityService.save(activity).then(function(response){
         wx.showToast({
           icon: 'none',
-          title: '发布活动成功'
+          title: '保存活动成功'
         });
 
         setTimeout(function(){
@@ -120,12 +127,20 @@ Page({
     }).catch(function(err){
       wx.showToast({
         icon: 'none',
-        title: '发布活动失败,原因:\n' + err.message
+        title: '保存活动失败,原因:\n' + err.message
       })
     });
 
   },
   doUpload: function () {
+    if(!this.data.form._id){
+      wx.showToast({
+        icon: 'none',
+        title: '请先保存活动再添加图片',
+      });
+      return;
+    }
+
     // 选择图片
     wx.chooseImage({
       count: 1,
@@ -148,9 +163,19 @@ Page({
           
             this.data.form.images.push(res.fileID)
 
+            activityService.update({
+              _id:this.data.form._id,
+              images:this.data.form.images
+            }).then(function(){
+              this.setData({
+                form:this.data.form
+            });
+
             this.setData({
               form:this.data.form
-            })
+            })      
+
+            }.bind(this));
           }.bind(this),
           fail: e => {
             console.error('[上传文件] 失败：', e)
@@ -179,15 +204,40 @@ Page({
     })
   },
   delImg:function(e){
-    this.data.form.images.forEach(function(v,index){
-      if(v==e.target.id){
-        this.data.form.images.splice(index,1);
-        return true;
-      }
-    }.bind(this));
+    wx.showLoading({
+      title:'正在删除图片'
+    });
+    
+    wx.cloud.deleteFile({
+      fileList: [e.target.id],
+      success: res => {
+      
+        this.data.form.images.forEach(function(v,index){
+          if(v==e.target.id){
+            this.data.form.images.splice(index,1);
+            return true;
+          }
+        }.bind(this));
 
-    this.setData({
-      form:this.data.form
+        activityService.update({
+          _id:this.data.form._id,
+          images:this.data.form.images
+        }).then(function(){
+          this.setData({
+            form:this.data.form
+          });
+        }.bind(this));
+
+      },
+      fail: function(err){
+        wx.showToast({
+          icon:'none',
+          title: '无法删除图片'+e.target.id+'原因：'+err.message
+        });     
+      },
+      complete: () => {
+        wx.hideLoading()
+      }
     });
   }
 });

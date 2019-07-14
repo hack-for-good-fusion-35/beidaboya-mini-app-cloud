@@ -2,60 +2,97 @@
 
 var app = getApp();
 
+const activityService = require('/../../services/activity-service')
+const userService = require('/../../services/user-service')
+
 Page({
   data: {
-    groupInfo: {},
-    pinsucess: false
+    userInfo:{},
+    participants:[]
   },
   onLoad: function (options) {
-    this.uid = wx.getStorageSync('uid');
-    this.order_sn = options.order_sn;
-    if (options.pinsucess !== undefined) {
-      this.setData({ pinsucess: true })
+    const pages = getCurrentPages();
+    this.detailPage = pages[pages.length-2];
+    if(!this.detailPage.data.activity || !this.detailPage.data.activity.participants){
+      wx.showToast({
+        title: '无法获取已报名列表',
+        icon: 'none'
+      })
+      return;
     }
-    // this.openGroupSuccess();
-  },
-  onHide: function () {
-    clearInterval(this.timer);
-  },
-  onUnload: function () {
-    clearInterval(this.timer);
-  },
-  onShow: function () {
-    // var page = this;
-    // var data = wx.getStorageSync('groupInfo');
-    // var timer = setInterval(function(){
-    // var time = page.timeFormat(data.group.group_off_time * 1000);
-    //   data.group.group_end_time = time;
-    //   if(!time){
-    //     page.setData({
-    //       groupInfo:data
-    //     })
-    //     return ;
-    //   }
-    //   page.setData({
-    //     groupInfo:data
-    //   })
-    // },1000)  
-    // this.timer = timer;
-    this.openGroupSuccess()
-  },
-  openGroupSuccess: function () {
-    
-  },
-  timeFormat: function (timestamp) {
-    var page = this;
-    var timestamp = timestamp;
-    // setInterval(function(){
-    var currentTime = (new Date()).getTime();
-    var time = timestamp - currentTime;
-    if (time <= 0) return false;
-    var times = Math.floor(time / (1000 * 60 * 60)) + ':' + Math.floor(time / (1000 * 60) % 60) + ':' + Math.floor(time / 1000 % 60);
-    return times;
-    // },1000)
+
+    if(app.globalData.userInfo){
+      this.initPage();
+    }else{
+      event.on('setUserInfo',this,function(){
+        this.initPage();
+      }.bind(this));  
+    }
+
+    this.setData({
+      participants:this.detailPage.data.activity.participants
+    });
 
   },
-  backHome: function (e) {
-    app.backHome();
+  onShow: function () {
+  },
+  initPage:function(){
+    this.setData({
+      isAdmin:userService.isAdmin(),
+      userInfo:app.globalData.userInfo
+    });
+  },
+  signout: function(e){
+    
+    const desc = e.target.dataset.desc;
+    const id = e.target.id;
+    wx.showModal({
+      title: '确定'+desc,
+      success:function(res){
+        if(res.confirm){
+
+          wx.showLoading({
+            title:'正在'+desc
+          });
+
+          activityService.signout(id).then(function(){
+            wx.showToast({
+              icon:'none',
+              title:desc+'成功'
+            });
+            wx.hideLoading();
+
+            this.data.participants.forEach(function(v,index){
+
+              if(v._id==id){
+                this.data.participants.splice(index,1);
+                return true;
+              }
+            }.bind(this));
+
+            this.detailPage.data.activity.participants = this.data.participants;
+
+            this.detailPage.setData({
+              activity:this.detailPage.data.activity
+            });
+
+            wx.navigateBack({
+              delta: 1
+            })
+
+          }.bind(this)).catch(function(err){ 
+
+            console.info(err)
+
+            wx.showToast({
+              icon:'none',
+              title:desc+'失败'
+            });
+            wx.hideLoading();
+          })
+          //.finally(function(){});
+        }
+      }.bind(this)
+    })
   }
 })

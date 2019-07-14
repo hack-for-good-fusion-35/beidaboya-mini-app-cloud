@@ -1,0 +1,69 @@
+.head {
+  background-color: #f76968;
+}
+
+.selpoi {
+  font-size: 14px;
+  margin:0 26rpx;
+  color: white;
+}
+
+.search-rad {
+  height: 56rpx;
+  background-color: white;
+  border-radius: 20rpx;
+  flex: 1;
+  margin: 0 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.participant {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #dcdcdc;
+  margin-left: 22rpx;
+  justify-content:space-between;
+}
+
+.list-item-title{
+  font-size:30rpx; 
+  color:#4a4a4a;
+}
+
+.list-item-content{
+  font-size:24rpx; 
+  color:#686868;
+  //white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
+}
+
+.intro {
+  width:100%;
+  display: flex;
+  justify-content:flex-start;
+  margin-right:10rpx;
+}
+
+.actions {
+  color: #cf8b95;
+  font-size: 26rpx;
+  display: flex;
+  justify-content: space-around;
+  margin-right:10rpx;
+}
+
+.pre {
+  border: 1rpx solid #12a2f1;
+  color: #12a2f1;
+}
+
+.action {
+  font-size: 26rpx;
+  float:right;
+  margin-right:5rpx;
+}

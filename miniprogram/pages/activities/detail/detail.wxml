@@ -28,10 +28,6 @@
       </view>
     </view>
   </view>
-  <!-- <view class="control">
-    <view class="islooked like">想参加</view>
-    <navigator url="" class="like">评分</navigator>
-  </view> -->
 </view>
 <view catchtap="flex">
   <view class="tBar" style="background-color:white;margin:0px;padding:28rpx 0 20rpx 28rpx;" >活动简介</view>
@@ -41,7 +37,7 @@
 <view class="warp" >
   <navigator class="tBar" url="../../signed-list/signed-list?id={{activity.id}}" >
     <view>已报名人员</view>
-    <view class="participants-number">{{activity.participants.length}} 人已参加</view>
+    <view class="participants-number">{{activity.participants.length}} 人已参加（点击进入列表）</view>
   </navigator>
   <scroll-view scroll-x style="width:100%;height:125rpx;margin:10rpx">
     <view class="participants">
@@ -59,9 +55,9 @@
   </view>
   <scroll-view scroll-x class="scr-H">
     <view class="spa scr-H-item"></view>
-    <navigator class="img-item scr-H-item" url="" wx:for="{{activity.images}}" wx:key="{{images}}" hover-class="none">
-      <image src="{{item}}" class="{{index==0?'long':'short'}}"></image>
-    </navigator>
+    <view class="img-item scr-H-item"  wx:for="{{activity.images}}" wx:key="{{imagesKey}}" hover-class="none">
+						<image bindtap="imgPreview" src="{{item}}" data-list="{{activity.images}}" data-src="{{oneImg}}" class="{{index==0?'long':'short'}}"></image>
+		</view> 
     <view class="spa scr-H-item"></view>
   </scroll-view>
 </view>
