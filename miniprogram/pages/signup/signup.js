@@ -92,7 +92,7 @@ Page({
   },
   submitBtn() {  
     var participant = this.data.form;
-    
+    participant.isAttended=false;
     try{
       util.validateForm(participant,formFields);
     }catch(message){

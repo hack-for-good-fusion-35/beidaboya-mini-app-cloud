@@ -4,6 +4,7 @@ var app = getApp();
 
 const activityService = require('/../../services/activity-service')
 const userService = require('/../../services/user-service')
+const _ = require('../../utils/lodash')
 
 Page({
   data: {
@@ -39,7 +40,8 @@ Page({
   initPage:function(){
     this.setData({
       isAdmin:userService.isAdmin(),
-      userInfo:app.globalData.userInfo
+      userInfo:app.globalData.userInfo,
+      canSubmit:true
     });
   },
   signout: function(e){
@@ -90,9 +92,36 @@ Page({
             });
             wx.hideLoading();
           })
-          //.finally(function(){});
         }
       }.bind(this)
     })
+  },
+  setAttendance:function(e){
+    const id = e.target.id;
+  
+    const target = _.find(this.data.participants,function(o){
+      return o._id === id;
+    });
+    target.isAttended=true;
+    
+
+    activityService.updateSignup({
+      _id:id,
+      isAttended:target.isAttended
+    }).then(function(res){
+      this.setData({
+        participants:this.data.participants
+      });
+      wx.showToast({
+        icon:'none',
+        title:res.message
+      })
+    }.bind(this)).
+    catch(function(res){
+      wx.showToast({
+        icon:'none',
+        title:res.message
+      })
+    }.bind(this));
   }
 })

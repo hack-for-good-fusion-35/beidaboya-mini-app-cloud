@@ -193,18 +193,18 @@ class ActivityService {
 
   signup(activityId,participant){
     return new Promise(function(resolve,reject){
-      const db = wx.cloud.database()
+      const db = wx.cloud.database();
 
-      const singnupRecord = lodash.extend({},{activityId:activityId},participant);
-      singnupRecord._id = undefined;
-      singnupRecord.userId = participant._id;
-      singnupRecord.languare = undefined;
-      singnupRecord.type = undefined;
-      singnupRecord._openid = undefined;
-      singnupRecord.attended=false;
+      const signupRecord = lodash.extend({},{activityId:activityId},participant);
+      signupRecord._id = undefined;
+      signupRecord.userId = participant._id;
+      signupRecord.languare = undefined;
+      signupRecord.type = undefined;
+      signupRecord._openid = undefined;
+      signupRecord.attended=false;
 
       db.collection('signup_records').add({
-        data: singnupRecord,
+        data: signupRecord,
         success: res => {
           if(res._id){
             resolve({
@@ -223,7 +223,33 @@ class ActivityService {
             message:message
           })
         }
-      })
+      });
+    });
+  }
+
+  updateSignup(signupRecord){
+    return new Promise(function(resolve,reject){
+      const db = wx.cloud.database();
+
+      var id = signupRecord._id;
+      signupRecord._id = undefined;
+
+      db.collection('signup_records').doc(id).update({
+        data: signupRecord,
+        success: res => {
+            resolve({
+              success:true,
+              message:'更新报名信息成功'
+            });
+        },
+        fail: err => {
+          let message = '更新报名信息失败';
+          reject({
+            success:false,
+            message:message
+          })
+        }
+      });
     });
   }
 
