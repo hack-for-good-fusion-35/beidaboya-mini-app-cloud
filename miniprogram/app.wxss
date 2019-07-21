@@ -1,6 +1,28 @@
 @import "/common/ui.wxss";
 
 /**app.wxss**/
+.content-box{
+  margin:20rpx;
+  box-sizing:content-box;
+  border:1rpx solid #ddd;
+  border-radius:20rpx;
+  box-sizing:border-box;
+}
+
+.horizontal-box{
+  display:flex;
+  justify-content:space-between;
+}
+
+.horizontal-box-item{
+
+} 
+
+.item-4{
+  width:25%;
+}
+
+
 .container {
   height: 100%;
   display: flex;

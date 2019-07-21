@@ -1,3 +1,43 @@
+.index-title{
+    font-size:80rpx;
+    color:#f76968;
+    display:flex;
+    justify-content:center;
+}
+
+.content-title{
+    font-size:30rpx;
+    color:#666;
+    margin-left:30rpx;
+    padding-top:8rpx;
+}
+
+.activity-types image{
+    width:100%;
+    max-height:150rpx;
+    box-sizing:border-box;
+    border-radius:20rpx;
+    padding:5rpx;
+    border-top:1rpx solid #ddd;
+    border-bottom:1rpx solid #ddd;
+}
+
+.activity-types{
+    font-size:25rpx;
+    font-wigth:900;
+    text-align:center;
+    padding:5rpx 10rpx;
+} 
+
+.activity-types-item {
+    padding:5rpx;
+}
+
+.activity-types text{
+    color:#666;
+    margin-botton:10rpx;
+}
+
 .activity-type-list{
     background-color: #f76968;
     box-sizing: border-box;
