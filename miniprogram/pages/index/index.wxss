@@ -6,10 +6,11 @@
 }
 
 .content-title{
-    font-size:30rpx;
+    font-size:25rpx;
     color:#666;
     margin-left:30rpx;
     padding-top:8rpx;
+    font-size:900;
 }
 
 .activity-types image{

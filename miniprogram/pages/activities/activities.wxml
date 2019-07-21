@@ -1,9 +1,35 @@
 <view class="head">
-  <SearchBar 
-    id="SearchBar" addflag="{{addflag}}" addimg="{{addimg}}" bind:addhandle="addhandle" 
-    searchstr="{{searchstr}}" bind:searchList="searchList" bind:endsearchList="endsearchList" 
-    bind:cancelsearch="cancelsearch" bind:activity_clear="activity_clear">
-  </SearchBar>
+  <view class="searchBar">
+      <icon class="iconfont icon-collapse {{collapsed?'icon-RectangleCopy1':'icon-RectangleCopy'}}" bindtap="toggleSearchBar"></icon>
+      <input type="text" value="{{form.title}}" placeholder='请输入...' />
+      <icon  class="iconfont icon-search"></icon>
+  </view>
+  <view class="advanced-search {{collapsed?'hide':''}}">
+    <view class="form-view">
+          <text>开始日期:</text>
+          <picker mode="date" value="{{formFields[1]['index']}}"  bindchange="startDateInput">
+            <view class="picker">
+              {{formFields[1]['text']}}
+            </view>
+          </picker>
+      </view>
+      <view class="form-view">
+          <text>结束日期:</text>
+          <picker mode="date" value="{{formFields[2]['index']}}"  bindchange="endDateInput">
+            <view class="picker">
+              {{formFields[2]['text']}}
+            </view>
+          </picker>
+      </view>
+      <view class="form-view">
+	            <text>活动类型:</text>
+				<picker bindchange="typeInput" value="{{formFields[3]['index']}}" range="{{formFields[3]['values']}}" range-key="text" >
+					<view class="picker">
+						{{formFields[3]['text']}}
+					</view>
+				</picker>
+	    </view>
+  </view>
 </view>
 
 
@@ -31,12 +57,12 @@
           <!-- <view class="singed" >
             <text>剩余名额:{{item.participants.length}}</text>
           </view> -->
-          <view class="singed" >
-            <navigator url="/pages/signup/signup?title={{item.title}}&id={{item._id}}" class="btn" >报名</navigator>
-          </view>
-
           <view class="singed" wx:if="{{isAdmin}}" >
             <navigator url="/pages/publish/publish?_id={{item._id}}" class="btn" >编辑</navigator>
+          </view>
+
+          <view class="singed" >
+            <navigator url="/pages/signup/signup?title={{item.title}}&id={{item._id}}" class="btn" >报名</navigator>
           </view>
 
         </view>

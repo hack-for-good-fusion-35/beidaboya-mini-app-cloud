@@ -1,5 +1,9 @@
 @import "/common/ui.wxss";
 
+.hide{
+  display:none;
+}
+
 /**app.wxss**/
 .content-box{
   margin:20rpx;

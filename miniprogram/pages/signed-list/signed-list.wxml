@@ -9,7 +9,7 @@
             <navigator url="/pages/signup/signup?_id={{item._id}}" wx:if="{{userInfo._id==item.userId}}" class="btn action" >编辑</navigator>
             <button id="{{item._id}}" data-desc="退出活动" bindtap="signout" wx:if="{{userInfo._id==item.userId}}" class="btn action" >退出</button>
             <button id="{{item._id}}"  bindtap="signin" wx:if="{{isAdmin}}" class="btn action" >签到</button>
-            <button id="{{item._id}}" data-desc="剔除" bindtap="signout" wx:if="{{isAdmin}}" class="btn action" >剔除</button>
+            <button id="{{item._id}}" data-desc="踢除" bindtap="signout" wx:if="{{isAdmin}}" class="btn action" >踢除</button>
           </view>
     </view>
   </view>

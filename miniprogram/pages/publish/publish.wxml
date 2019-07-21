@@ -51,10 +51,10 @@
 	            <text>描述</text>
 	            <textarea name="description" maxlength="255" placeholder="请输入描述" placeholder-style="color: #A0A0A0;"  value="{{form.description}}" bindinput="descriptionInput" />
 	        </view>
-			<view class="form-view">
+			<!-- <view class="form-view">
 	            <text>人数上限</text>
 	            <input name="numberLimit" maxlength="5" placeholder="请输入人数上线" placeholder-style="color: #A0A0A0"  value="{{form.numberLimit}}" bindinput="numberLimitInput" />
-	        </view>
+	        </view> -->
 	    </view>
 		<view class="warp" style="height:278rpx;">
 			<view class="tBar">

@@ -53,8 +53,7 @@ const formFields = [{
   text:'请选择活动类型',
   description:'活动类型',
   validates:['not-empty']
-}
-]
+}];
 
 Page({
   data: {

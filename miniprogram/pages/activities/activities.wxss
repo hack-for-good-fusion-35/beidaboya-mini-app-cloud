@@ -29,6 +29,11 @@
   margin-left: 22rpx;
 }
 
+.activity > image{
+  border:1rpx solid #ddd;
+  border-radius:15rpx;
+}
+
 .list-item-title{
   font-size:30rpx; 
   color:#4a4a4a;
@@ -84,4 +89,77 @@
   color:#999;
   text-align:center;
   font-size:30rpx;
+}
+
+.searchBar{
+  display:flex;
+  background:#f76968;
+  height:60rpx;
+  line-height:30rpx;
+  font-size:26rpx;
+  justify-content:flex-start;
+  align-items:center;
+  padding-bottom:10rpx;
+  position:fix;
+  top:60rpx;
+}
+
+.searchBar input{
+  display:block;
+  border:1rpx sold #ddd;
+  border-radius:30rpx;
+  background:white;
+  padding-left:30rpx;
+  width:80%;
+}
+
+.searchBar icon{
+  color:white;
+  height:60rpx;
+  line-height:50rpx;
+  font-size:50rpx;
+  align-self:bottom;
+  text-align:center;
+  margin:0 10rpx;
+  font-size:900;
+}
+
+.searchBar .icon-collapse{
+  font-size:60rpx;
+}
+.advanced-search{
+  padding:10rpx;
+  //padding-left:30rpx;
+  position:absolute;
+  top:60rpx;
+  width:100%;
+  background-color: #f76968;
+  z-index:1;
+
+}
+.advanced-search .form-view {
+  color:white;
+  font-size:20rpx;
+  margin-bottom:10rpx;
+}
+
+.advanced-search picker{
+  display:block;
+  width:70%;
+  border-radius:30rpx;
+  background-color:white;
+  color:#666;
+  padding-left:30rpx;
+  box-sizing:border-box;
+  line-height:40rpx;
+  height:40rpx;
+}
+
+.advanced-search .form-view >text {
+  margin-right:20rpx;
+  align-self:center;
+}
+
+.form-view{
+  display:flex;
 }

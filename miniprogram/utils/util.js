@@ -60,6 +60,7 @@ function validateForm(target,formFields){
 }
 
 function initForm(page,target,formFields){
+  
   formFields.forEach(function(field,index){  
     const value = target[field.name];
     if(value){
@@ -87,7 +88,7 @@ function initForm(page,target,formFields){
         field.text = field['values'][field.index].text;
         this.data.formFields[index]=field;
         this.setData({
-          formFields:this.data.formFields
+          'formFields':this.data.formFields
         })      
       }
     }else if(field.type=='date'){
@@ -97,7 +98,7 @@ function initForm(page,target,formFields){
         field['text'] = e.detail.value;
         this.data.formFields[index]=field;
         this.setData({
-          formFields:this.data.formFields
+          'formFields':this.data.formFields
         })      
       }
     }else{
@@ -107,6 +108,10 @@ function initForm(page,target,formFields){
       }
     }
   }.bind(page));
+
+  page.setData({
+    'formFields':formFields
+  });
 
 }
 

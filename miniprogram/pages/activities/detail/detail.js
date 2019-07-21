@@ -16,9 +16,9 @@ Page({
   })
 
    activityService.getById(id).then(function(response){
-  
+
    response.statusText=_.find(activityService.getTypes(),function(o){
-    return o.value=response.status;
+    return o.value==response.type;
    }).text;
 
    this.setData({
