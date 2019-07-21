@@ -78,14 +78,14 @@
 	   		<template is="mm-radio" data="{{...items}}"></template>
 	    </view> -->
 	   	<view class="btnBox">
-	    	<button class="submit-btn" bindtap="submitBtn">
+	    	<button disabled="{{!canSubmit}}" class="submit-btn" bindtap="submitBtn">
 	        	<text>保存活动</text>
 	    	</button>
 	    </view>
     </form>
 </view>
 
-<button bindtap="doUpload" class="btn add-resource" size="10" style="width:250rpx;">添加图片或视频</button>
+<button disabled="{{!canSubmit}}" bindtap="doUpload" class="btn add-resource" size="10" style="width:250rpx;">添加图片或视频</button>
 
 <view mm-loading-animation ng-if="loading"></view>
 

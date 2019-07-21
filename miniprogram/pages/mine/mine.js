@@ -39,12 +39,12 @@ Page({
   },
   myActivities: function (e) {
     wx.navigateTo({
-      url: '/pages/activities/activities?status=singed'
+      url: '/pages/activities/activities?search=singed'
     })
   },
   historyActivities: function (e) {
     wx.navigateTo({
-      url: '/pages/activities/activities?status=ended'
+      url: '/pages/activities/activities?search=ended'
     })
   },
   adminList: function (e) {

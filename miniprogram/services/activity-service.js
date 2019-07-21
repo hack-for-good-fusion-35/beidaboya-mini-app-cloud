@@ -1,7 +1,15 @@
-const _ = require('../utils/lodash')
+const lodash = require('../utils/lodash')
+
 
 class ActivityService {
   constructor() {
+
+    this.STATUS_PREVIEW = 1;
+    this.STATUS_SIGNUPING = 4;
+    this.STATUS_ONGOING = 7;
+    this.STATUS_ENDED = 10;
+    this.STATUS_CANCELED = 13;
+
     this.types = [
       {
         value: "1",
@@ -25,6 +33,14 @@ class ActivityService {
       }
     ];
 
+    this.status = [
+      {value:this.STATUS_PREVIEW,text:'预览'},
+      {value:this.STATUS_SIGNUPING,text:'报名中'},
+      {value:this.STATUS_ONGOING,text:'进行中'},
+      {value:this.STATUS_ENDED,text:'结束'},
+      {value:this.STATUS_CANCELED,text:'取消'}
+    ];
+
     // this.mockData = [{
     //   _id: 1,
     //   type:1,
@@ -41,10 +57,38 @@ class ActivityService {
   }
 
   find(condition,start,count) {
+
+    condition = lodash.clone(condition);
+
     return new Promise(function (resolve,reject) {
       //resolve([]);
       const db = wx.cloud.database()
       let search = db.collection('activities');
+
+      const command = db.command;
+
+      if(condition.title){
+        condition.title = db.RegExp({
+          regexp: condition.title,
+          options: 'i',
+        })
+      }
+
+      switch(condition.search){
+        case 'singed':condition.status = command.lt(this.STATUS_ENDED);break;
+        case 'ended':condition.status = command.gte(this.STATUS_ENDED);break;
+        case 'published':condition.status = command.lt(this.STATUS_ENDED);break;
+      }
+
+      condition.search = undefined;
+
+      if(condition.startDate){
+        condition.startDate = command.gte(condition.startDate);
+      }
+
+      if(condition.endDate){
+        condition.endDate = command.lte(condition.endDate);
+      }
       
       search=condition?search.where(condition):search;
       search=start?search.skip(start):search;
@@ -99,6 +143,7 @@ class ActivityService {
   }
 
   save(activity){
+    activity.status = parseInt(activity.status);
     if(!activity._id){
       return this.add(activity);
     }else{
@@ -128,7 +173,7 @@ class ActivityService {
   } 
 
   update(activity){
-    const updatedActivity=_.clone(activity);
+    const updatedActivity=lodash.clone(activity);
     updatedActivity._openid=undefined;
     updatedActivity._id=undefined;
     return new Promise(function(resolve,reject){
@@ -150,7 +195,7 @@ class ActivityService {
     return new Promise(function(resolve,reject){
       const db = wx.cloud.database()
 
-      const singnupRecord = _.extend({},{activityId:activityId},participant);
+      const singnupRecord = lodash.extend({},{activityId:activityId},participant);
       singnupRecord._id = undefined;
       singnupRecord.userId = participant._id;
       singnupRecord.languare = undefined;
@@ -206,6 +251,10 @@ class ActivityService {
 
   getTypes(){
     return this.types;
+  }
+
+  getStatus(){
+    return this.status;
   }
 
 }

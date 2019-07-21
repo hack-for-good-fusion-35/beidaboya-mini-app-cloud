@@ -12,13 +12,7 @@ const formFields = [{
 },{
   name:'status',
   type:'picker',
-  values:[
-    {value:1,text:'预览'},
-    {value:4,text:'报名中'},
-    {value:5,text:'进行中'},
-    {value:10,text:'结束'},
-    {value:13,text:'取消'}
-  ],
+  values:activityService.getStatus(),
   text:'请选择活动状态',
   description:'活动状态',
   validates:['not-empty']
@@ -45,7 +39,7 @@ const formFields = [{
 },{
   name:'numberLimit',
   description:'人数上限',
-  validates:['not-empty']
+  //validates:['not-empty']
 },{
   name:'type',
   type:'picker',
@@ -62,7 +56,8 @@ Page({
     form: {
       participants:[],
       images:[]
-    }
+    },
+    canSubmit:true
   },
   onLoad(params) {
 
@@ -109,6 +104,10 @@ Page({
       return;
     }
 
+    this.setData({
+      canSubmit:false
+    });
+
     activityService.save(activity).then(function(response){
         wx.showToast({
           icon: 'none',
@@ -116,19 +115,28 @@ Page({
         });
 
         setTimeout(function(){
+
+          this.setData({
+            canSubmit:true
+          });
+
           var pages = getCurrentPages();
           pages[pages.length-1].onLoad();
           wx.switchTab({
             url: '/pages/index/index'
           })
-        }.bind(this),1000)
+        }.bind(this),2000);
         
-    }).catch(function(err){
+    }.bind(this)).catch(function(err){
       wx.showToast({
         icon: 'none',
         title: '保存活动失败,原因:\n' + err.message
-      })
-    });
+      });
+
+      this.setData({
+        canSubmit:true
+      });
+    }.bind(this));
 
   },
   doUpload: function () {

@@ -31,13 +31,7 @@ const formFields = [{
 {
   name:'status',
   type:'picker',
-  values:[
-    {value:1,text:'预览'},
-    {value:4,text:'报名中'},
-    {value:5,text:'进行中'},
-    {value:10,text:'结束'},
-    {value:13,text:'取消'}
-  ],
+  values:activityService.getStatus(),
   text:'请选择活动状态',
   description:'活动状态'
 }];
@@ -59,6 +53,10 @@ var pageConfig = {
   },
   onLoad: function(params) {
 
+    this.start=0;
+    this.data.form = {};
+
+    this.data.form.search = params.search;
     this.data.form.type = params.type;
 
     util.initForm(this,this.data.form,formFields);
@@ -79,7 +77,6 @@ var pageConfig = {
     this.loadActivities();
   },
   loadActivities:function(){
-
 
     activityService.find(this.data.form,this.data.start, this.data.counts).then(function(response) {
       if(response.length<1||response.length<this.data.counts){
@@ -108,7 +105,13 @@ var pageConfig = {
     });
   },
   search:function(){
-    
+    this.data.indexData.activities = [];
+    this.setData({
+      indexData:this.data.indexData,
+      start:0,
+      collapsed:true
+    });
+    this.loadActivities();
   }
 }
 

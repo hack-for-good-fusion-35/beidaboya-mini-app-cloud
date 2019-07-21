@@ -7,10 +7,10 @@
   </view>
 
   <view class="warp">  <!-- ?title={{item.title}}&id={{item.id}} -->
-    <navigator url="/pages/activities/activities" class="item" >我的活动</navigator>
-    <navigator url="/pages/activities/activities" class="item" >历史活动</navigator>
+    <navigator url="/pages/activities/activities?search=singed" class="item" >我的活动</navigator>
+    <navigator url="/pages/activities/activities?search=ended" class="item" >历史活动</navigator>
     <navigator wx:if="{{isAdmin}}" url="/pages/publish/publish" class="item" >发布</navigator>
-    <navigator wx:if="{{isAdmin}}" url="/pages/admin-list/admin-list" class="item last" >管理员列表</navigator>
+    <!-- <navigator wx:if="{{isAdmin}}" url="/pages/admin-list/admin-list" class="item last" >管理员列表</navigator> -->
   </view>
 
 </view>

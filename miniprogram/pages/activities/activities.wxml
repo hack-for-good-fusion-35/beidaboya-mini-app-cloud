@@ -1,8 +1,8 @@
 <view class="head">
   <view class="searchBar">
       <icon class="iconfont icon-collapse {{collapsed?'icon-RectangleCopy1':'icon-RectangleCopy'}}" bindtap="toggleSearchBar"></icon>
-      <input type="text" value="{{form.title}}" placeholder='请输入...' />
-      <icon  class="iconfont icon-search"></icon>
+      <input type="text" value="{{form.title}}" placeholder='请输入...' bindchange="titleInput" />
+      <icon bindtap="search" class="iconfont icon-search"></icon>
   </view>
   <view class="advanced-search {{collapsed?'hide':''}}">
     <view class="form-view">
