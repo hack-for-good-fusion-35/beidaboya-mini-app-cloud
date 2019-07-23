@@ -1,5 +1,20 @@
+<wxs module="util" src="../../utils/util.wxs"></wxs>
+
+<view class="content-box search-box">
+  <view class="search-item" >
+    
+    <label for="only-unattended">只显示未签到：</label>
+    <checkbox-group bindchange="onlyUnattended">
+      <checkbox name="only-unattended" checked="{{onlyUnattended}}"/>
+    </checkbox-group>
+  </view>
+  <view class="search-item" >
+    <label for="search-by-name">根据姓名搜索：</label><input name="search-by-name" value="{{searchByName}}" bindinput="searchByNameChange" type="input" />
+  </view>
+</view>
+<hr/>
 <block wx:for="{{participants}}" wx:key="keys">
-  <view style="position:relative;" >
+  <view wx:if="{{((onlyUnattended && !item.isAttended)||!onlyUnattended) && util.regexTest(item.name,searchByName)}}" style="position:relative;" >
     <view style="height:116rpx;" class="participant">
         <image src="{{item.avatarUrl}}" style="height:100rpx;width:100rpx;min-width:100rpx;margin-right:20rpx;"></image>
         <view style="font-size:12px" class="intro">
@@ -12,11 +27,11 @@
             <button id="{{item._id}}" data-desc="踢除" bindtap="signout" wx:if="{{isAdmin}}" class="btn action" >踢除</button>
           </view>
     </view>
-
-    <view class="btnBox">
-	    	<button disabled="{{!canSubmit}}" class="submit-btn" bindtap="exportToClicpboard">
-	        	<text>导出名单到粘贴半</text>
-	    	</button>
-	  </view>
   </view>
 </block>
+
+<view wx:if="{{isAdmin}}" class="btnBox">
+	<button disabled="{{!canSubmit}}" class="submit-btn" bindtap="exportToClicpboard">
+	  <text>导出名单到粘贴半</text>
+	</button>
+</view>

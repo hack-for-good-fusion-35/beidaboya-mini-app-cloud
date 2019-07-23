@@ -22,7 +22,7 @@
   <view class="content-title" >活动分类</view>
   <hr/>
   <view class="horizontal-box activity-types">
-  <navigator wx:for="{{activityTypes}}" wx:for-item="activityType" data-goods-id="{{activityType.value}}" url="/pages/activities/activities?type={{activityType.value}}&&search=published" class="activity-types-item horizontal-box-item item-4" >
+  <navigator wx:for="{{activityTypes}}" wx:for-item="activityType" data-goods-id="{{activityType.value}}" url="/pages/activities/activities?type={{activityType.value}}&&search=published" class="activity-types-item horizontal-box-item .item-3" >
         <image mode="aspectFill" src="{{activityType.covers_image}}"></image>
         <text>{{activityType.text}}</text>
   </navigator>

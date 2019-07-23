@@ -67,3 +67,24 @@
   float:right;
   margin-right:5rpx;
 }
+
+.search-box{
+  font-size:24rpx;
+  color:#666;
+}
+.search-box > .search-item{
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  margin:10rpx;
+}
+
+.search-box > .search-item > label{
+  
+}
+
+.search-box > .search-item > input{
+  border:1rpx solid #ddd;
+  border-radius:10rpx; 
+  width:70%;
+}

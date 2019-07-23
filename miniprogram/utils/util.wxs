@@ -1,0 +1,7 @@
+var regexTest = function(target,regex){
+    return !regex || getRegExp(regex,"i").test(target);
+}
+
+module.exports = {
+  regexTest: regexTest
+};

@@ -13,23 +13,33 @@ class ActivityService {
     this.types = [
       {
         value: "1",
-        text: "老人相关活动",
-        covers_image: "http://img13.360buyimg.com/n1/jfs/t3370/315/1984719501/142392/2f47d380/583b993cN67ee086a.jpg"
+        text: "党建引领服务",
+        covers_image: "../../static/images/danghui.png"
       },
       {
         value: "2",
-        text: "小孩相关活动",
-        covers_image: "http://img13.360buyimg.com/n1/jfs/t3370/315/1984719501/142392/2f47d380/583b993cN67ee086a.jpg"
+        text: "社区环境提升服务",
+        covers_image: "../../static/images/shequ.jpeg"
       },
       {
         value: "3",
-        text: "残疾人相关活动",
-        covers_image: "http://img12.360buyimg.com/n1/jfs/t3889/328/776583683/297786/ea024d8b/585b995cNa4d6e7f4.jpg"
+        text: "家庭服务",
+        covers_image: "../../static/images/jiating.png"
       },
       {
         value: "4",
-        text: "病人相关活动",
-        covers_image: "http://img12.360buyimg.com/n1/jfs/t3889/328/776583683/297786/ea024d8b/585b995cNa4d6e7f4.jpg"
+        text: "长者服务",
+        covers_image: "../../static/images/zhangzhe.jpeg"
+      },
+      {
+        value: "5",
+        text: "青少年服务",
+        covers_image: "../../static/images/qingshaonian.jpeg"
+      },
+      {
+        value: "6",
+        text: "社区志愿服务",
+        covers_image: "../../static/images/zhiyuanzhe.jpeg"
       }
     ];
 

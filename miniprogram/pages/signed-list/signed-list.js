@@ -9,7 +9,9 @@ const _ = require('../../utils/lodash')
 Page({
   data: {
     userInfo:{},
-    participants:[]
+    participants:[],
+    onlyUnattended:false,
+    searchByName:undefined
   },
   onLoad: function (options) {
     const pages = getCurrentPages();
@@ -123,5 +125,15 @@ Page({
         title:res.message
       })
     }.bind(this));
+  },
+  onlyUnattended:function(e){
+    this.setData({
+      onlyUnattended:e.detail.value.length>0
+    });
+  },
+  searchByNameChange:function(e){
+    this.setData({
+      searchByName:e.detail.value
+    });
   }
 })

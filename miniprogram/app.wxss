@@ -11,6 +11,7 @@
   border:1rpx solid #ddd;
   border-radius:20rpx;
   box-sizing:border-box;
+  padding:10rpx;
 }
 
 .horizontal-box{
@@ -26,6 +27,9 @@
   width:25%;
 }
 
+.item-3{
+  width:33.3333%;
+}
 
 .container {
   height: 100%;
@@ -102,4 +106,9 @@
   font-size: 24rpx;
   padding:0px;
   margin:0px;
+}
+
+checkbox .wx-checkbox-input {
+  width: 24rpx;
+  height: 24rpx;
 }
