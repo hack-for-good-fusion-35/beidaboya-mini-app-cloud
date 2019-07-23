@@ -10,12 +10,12 @@
     color:#666;
     margin-left:30rpx;
     padding-top:8rpx;
-    font-size:900;
+    font-weight:900;
 }
 
 .activity-types image{
     width:100%;
-    max-height:150rpx;
+    max-height:110rpx;
     box-sizing:border-box;
     border-radius:20rpx;
     padding:5rpx;
