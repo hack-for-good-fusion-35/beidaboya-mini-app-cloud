@@ -135,5 +135,28 @@ Page({
     this.setData({
       searchByName:e.detail.value
     });
+  },
+  exportToClicpboard:function(e){
+    let data = this.data.participants.reduce(function(result,p){
+        return result+=p.name+','+(p.gender==1?'男':'女')+','+p.age+','+p.mobile+','+
+        p.job+','+
+        p.nationalId+','+
+        _.find(userService.getTypes(),function(o){
+          return o.value==p.politicalStatus
+        }).text+','+
+        p.liveCommittee+','+
+        p.address+'\n';
+    },'姓名,性别,年龄,电话,职业,身份证号,政治面貌,所属居委会,个人地址\n');
+
+    wx.setClipboardData({
+      'data':data,
+      'success':function(){
+        wx.hideLoading();
+        wx.showToast({
+          icon:'none',
+          title:'成功导出用户列表到粘贴板'
+        })
+      }
+    })
   }
 })

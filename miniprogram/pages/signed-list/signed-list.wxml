@@ -32,6 +32,6 @@
 
 <view wx:if="{{isAdmin}}" class="btnBox">
 	<button disabled="{{!canSubmit}}" class="submit-btn" bindtap="exportToClicpboard">
-	  <text>导出名单到粘贴半</text>
+	  <text>导出名单到粘贴板</text>
 	</button>
 </view>

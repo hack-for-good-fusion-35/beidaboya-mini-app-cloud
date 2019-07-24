@@ -62,9 +62,9 @@
     padding: 0 0.35rem;
 }
 .form-edit .form-view text {
-	width: 4rem;
-    text-align: justify;
-    float: left;
+	width: 200rpx;
+  text-align: justify;
+  float: left;
 }
 .form-edit .form-view input,.form-edit .form-view picker,.form-edit .form-view textarea {
     height: 1.2rem;
