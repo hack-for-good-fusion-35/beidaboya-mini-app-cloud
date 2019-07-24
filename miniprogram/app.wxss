@@ -11,7 +11,13 @@
   border:1rpx solid #ddd;
   border-radius:20rpx;
   box-sizing:border-box;
-  padding:10rpx;
+  padding:20rpx;
+  font-size:24rpx;
+  color:#666;
+}
+
+.content-box > text {
+  display:flex;
 }
 
 .horizontal-box{

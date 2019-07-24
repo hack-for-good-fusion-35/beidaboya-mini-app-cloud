@@ -20,13 +20,36 @@
 
 <view class="content-box">
   <view class="content-title" >活动分类</view>
-  <hr/>
   <view class="horizontal-box activity-types">
   <navigator wx:for="{{activityTypes}}" wx:for-item="activityType" data-goods-id="{{activityType.value}}" url="/pages/activities/activities?type={{activityType.value}}&&search=published" class="activity-types-item horizontal-box-item .item-3" >
         <image mode="aspectFill" src="{{activityType.covers_image}}"></image>
         <text>{{activityType.text}}</text>
   </navigator>
   </view>
+</view>
+
+<view class="content-box">
+  <view class="content-title" >金花街社工服务站介绍</view>
+  <text decode="{{true}}" >
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;金花街社工服务站(家综)由金花街道办事处采用政府购买服务模式、广州市北达博雅社会工作资源中心负责运营，为金花街辖内居民提供专业社工服务。
+社工站(家综)配备社工、康复治疗师及护士的跨专业团队:社工协助金花街道居民缓解心理情绪的压力，提供调适家庭、学校、工作等各方关系的辅导，
+协助居民链接家庭、政府、社会各方面的资源，为居民提供各种发展能力、丰富生活的小组活动和节庆活动，
+提供居民参与义工的平台;康复治疗师及护土提供上门的康复训练指导、药物管理、护理指导等服务</text>
+  <text>\n</text>
+  <text>联系电话:020-81329426、81044050</text>
+  <text>桃源地址:荔湾区光复北桃源街48号</text>
+  <text>蟠虬地址:荔湾区金花直街95号(党群服务中心2楼)</text>
+</view>
+
+<view class="content-box">
+  <view class="content-title">北达博雅简介</view>
+  <text decode="{{true}}" >
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;广州市北达博雅社会工作资源中心是北京大学校友发起组建的专业性社会工作服务机构， 在广州市民间组织管理局注册，
+    属公益性、非营利性组织。
+  </text>
+  <text decode="{{true}}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本中心成立于2009年，开展专业社会实务、研究、监导培训服务。目前在广州、佛山和中山承接多个家庭综合服务中心、
+    医院、企业及工业园区、综合运营平台等项目，并形成优势品牌服务。
+  </text>
 </view>
 
  
