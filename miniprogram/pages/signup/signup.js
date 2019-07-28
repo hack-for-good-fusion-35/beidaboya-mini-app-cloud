@@ -56,25 +56,35 @@ Page({
     activityId:'',
     formFields:formFields,
     loading: true,
-    canSubmit:true
+    canSubmit:true,
+    action:'save',
+    canEdit:true
   },
   onLoad(params) {
-    var participant = _.clone(app.globalData.userInfo);
+    var participant;
+
+    if(params.action!='view'){
+      participant = _.clone(app.globalData.userInfo);
+      canEdit=true;
+    }else{
+      const pages = getCurrentPages();
+      const signedListPage = pages[pages.length-2];
+      participant = _.clone(_.find(signedListPage.data.participants,function(o){
+        return o.userId == app.globalData.userInfo._id
+      }));
+      canEdit=false;
+    }
 
     util.initForm(this,participant,formFields);
   
     this.setData({
       form:participant,
       formFields:formFields,
-      activityId: params.id
-    });       
+      activityId: params.id,
+      action:params.action,
+      canEdit:canEdit
+    });
 
-    if(!this.data.activityId){
-      wx.showToast({
-        icon:'none',
-        title: '无法获取活动ID'
-      });
-    }
   },
   submitBtn() {  
     var participant = this.data.form;

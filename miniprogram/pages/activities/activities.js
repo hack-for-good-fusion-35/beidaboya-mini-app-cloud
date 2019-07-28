@@ -79,17 +79,24 @@ var pageConfig = {
   loadActivities:function(){
 
     activityService.find(this.data.form,this.data.start, this.data.counts).then(function(response) {
-      if(response.length<1||response.length<this.data.counts){
+      
+        if(response.length<1||response.length<this.data.counts){
+          this.setData({
+            runOutOfData:true
+          });
+        }
+        let newList = this.data.indexData.activities.concat(response)
         this.setData({
-          runOutOfData:true
-        });
-      }
-      let newList = this.data.indexData.activities.concat(response)
-      this.setData({
-        'indexData.activities': newList,
-        start: this.data.start + this.data.counts
+          'indexData.activities': newList,
+          start: this.data.start + this.data.counts
+        })
+      }.bind(this)).
+    catch(function(err){
+      wx.showToast({
+        title: err,
+        icon: 'none'
       })
-    }.bind(this));
+    });
   },
   onShow: function() {
 

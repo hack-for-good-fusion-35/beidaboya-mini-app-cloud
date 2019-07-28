@@ -62,7 +62,7 @@
           </view>
 
           <view class="singed" >
-            <navigator url="/pages/signup/signup?title={{item.title}}&id={{item._id}}" class="btn" >报名</navigator>
+            <navigator url="/pages/signup/signup?id={{item._id}}&&action=save" class="btn" >报名</navigator>
           </view>
 
         </view>

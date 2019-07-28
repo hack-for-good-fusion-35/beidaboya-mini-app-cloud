@@ -1,16 +1,16 @@
 <!-- <import src="../../common/templates/mm-radio.wxml" /> -->
 <!-- <import src="../../common/template/address-picker.wxml" /> -->
 <view>
-    <form name="signupForm" novalidate>
+    <form name="signupForm" novalidate  >
         <view class="form-edit">
 	        <view class="form-view">
 	            <text>报名人</text>
-	            <input name="name" maxlength="15" placeholder="请输入姓名" placeholder-style="color: #A0A0A0" value="{{form.name}}" bindinput="nameInput" />
+	            <input name="name" maxlength="15" disabled="{{!canEdit}}" placeholder="请输入姓名" placeholder-style="color: #A0A0A0" value="{{form.name}}" bindinput="nameInput" />
 	        </view>
 			<view class="form-view">
 	            <text>性别</text>
 	            <!-- <input name="gender" maxlength="1" placeholder="请输入性别" placeholder-style="color: #A0A0A0" value="{{gender}}" bindinput="genderInput" /> -->
-				<picker bindchange="genderInput" value="{{formFields[1]['index']}}" range="{{formFields[1]['values']}}" range-key="text" >
+				<picker bindchange="genderInput" disabled="{{!canEdit}}"  value="{{formFields[1]['index']}}" range="{{formFields[1]['values']}}" range-key="text" >
 					<view class="picker">
 						{{formFields[1]['text']}}
 					</view>
@@ -18,25 +18,25 @@
 	        </view>
 			<view class="form-view">
 	            <text>年龄</text>
-	            <input name="age" maxlength="2" placeholder="请输入年龄" placeholder-style="color: #A0A0A0" value="{{form.age}}" bindinput="ageInput" />
+	            <input name="age" maxlength="2" disabled="{{!canEdit}}"  placeholder="请输入年龄" placeholder-style="color: #A0A0A0" value="{{form.age}}" bindinput="ageInput" />
 	        </view>
 			<view class="form-view">
 	            <text>手机号码</text>
-	            <input name="mobile" type="text" maxlength="11" placeholder="请输入11位手机号码" bindtap="" value="{{form.mobile}}" bindinput="mobileInput" />
+	            <input name="mobile" type="text" disabled="{{!canEdit}}"  maxlength="11" placeholder="请输入11位手机号码" bindtap="" value="{{form.mobile}}" bindinput="mobileInput" />
 	            <view wx:if="{{isClear}}" bindtap="{{mobile}}==''" class="input-clear"></view>
 	        </view>
 			<view class="form-view">
 	            <text>职业</text>
-	            <input name="job" maxlength="10" placeholder="请输入职业" placeholder-style="color: #A0A0A0"  value="{{form.job}}" bindinput="jobInput" />
+	            <input name="job" maxlength="10" disabled="{{!canEdit}}"  placeholder="请输入职业" placeholder-style="color: #A0A0A0"  value="{{form.job}}" bindinput="jobInput" />
 	        </view>
 			<view class="form-view">
 	            <text>身份证号</text>
-	            <input name="nationalId" maxlength="18" placeholder="请输入身份证号" placeholder-style="color: #A0A0A0"  value="{{form.nationalId}}" bindinput="nationalIdInput" />
+	            <input name="nationalId" maxlength="18" disabled="{{!canEdit}}"  placeholder="请输入身份证号" placeholder-style="color: #A0A0A0"  value="{{form.nationalId}}" bindinput="nationalIdInput" />
 	        </view>
 			<view class="form-view">
 	            <text>政治面貌</text>
 	            <!-- <input name="politicalStatus" maxlength="18" placeholder="请输入政治面貌" placeholder-style="color: #A0A0A0"  value="{{politicalStatus}}" bindinput="politicalStatusInput" /> -->
-	        	<picker bindchange="politicalStatusInput" value="{{formFields[6]['index']}}" range="{{formFields[6]['values']}}" range-key="text" >
+	        	<picker bindchange="politicalStatusInput" disabled="{{!canEdit}}"  value="{{formFields[6]['index']}}" range="{{formFields[6]['values']}}" range-key="text" >
 					<view class="picker">
 						{{formFields[6]['text']}}
 					</view>
@@ -44,12 +44,12 @@
 			</view>
 			<view class="form-view">
 	            <text>所属社区居委</text>
-	            <input type="text" maxlength="60" placeholder="请输入所属社区居委" value="{{form.liveCommittee}}" bindinput="liveCommitteeInput" />
+	            <input type="text" maxlength="60" disabled="{{!canEdit}}"  placeholder="请输入所属社区居委" value="{{form.liveCommittee}}" bindinput="liveCommitteeInput" />
 	        </view>
 
 	        <view class="form-view">
 	            <text>个人地址</text>
-	            <input type="text" maxlength="60" placeholder="请输入详细个人地址" value="{{form.address}}" bindinput="addressInput" />
+	            <input type="text" maxlength="60" disabled="{{!canEdit}}"  placeholder="请输入详细个人地址" value="{{form.address}}" bindinput="addressInput" />
 	        </view>
 	    </view>
 
@@ -57,7 +57,7 @@
 	   		<template is="mm-radio" data="{{...items}}"></template>
 	    </view> -->
 	   	<view class="btnBox">
-	    	<button disabled="{{!canSubmit}}" class="submit-btn" bindtap="submitBtn">
+	    	<button disabled="{{!canSubmit}}"  class="submit-btn {{canEdit?'':'hide'}}" bindtap="submitBtn">
 	        	<text>确认报名</text>
 	    	</button>
 	    </view>

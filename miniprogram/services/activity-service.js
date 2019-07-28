@@ -1,5 +1,5 @@
 const lodash = require('../utils/lodash')
-
+const app = getApp()
 
 class ActivityService {
   constructor() {
@@ -70,50 +70,106 @@ class ActivityService {
 
     condition = lodash.clone(condition);
 
-    return new Promise(function (resolve,reject) {
-      //resolve([]);
-      const db = wx.cloud.database()
-      let search = db.collection('activities');
+    return new Promise(function(resolve,reject){
+      this.preFind(condition,start,count).
+          then(function(ids){
+
+            const db = wx.cloud.database();
+            let search = db.collection('activities');
+
+            const command = db.command;
+
+            if(condition.title){
+              condition.title = db.RegExp({
+                regexp: condition.title,
+                options: 'i',
+              })
+            }
+
+            switch(condition.search){
+              case 'singed':condition.status = command.lt(this.STATUS_ENDED);break;
+              case 'ended':condition.status = command.gte(this.STATUS_ENDED);break;
+              case 'published':condition.status = command.lt(this.STATUS_ENDED);break;
+            }
+
+            condition.search = undefined;
+
+            if(condition.startDate){
+              condition.startDate = command.gte(condition.startDate);
+            }
+
+            if(condition.endDate){
+              condition.endDate = command.lte(condition.endDate);
+            }
+            
+            search=condition?search.where(condition):search;
+            search=start?search.skip(start):search;
+            search=count?search.limit(count):search;
+
+            if(ids&&ids.length>0){
+              condition._id = command.in(ids);
+            }
+          
+            return search.get({
+              success: function(res){
+                  resolve(res.data);
+              }.bind(this),
+              fail: err => {
+                console.error('[数据库] [查询记录] 失败：', err);
+                reject(err);
+              }
+            });
+
+          }.bind(this)).
+          catch(function(err){
+            reject(err);
+          });
+    }.bind(this));
+
+  }
+
+  preFind(condition,start,count){
+    return new Promise(function(resolve,reject){
+
+      const preCondition = {};
+
+      if(app.globalData.userInfo&&app.globalData.userInfo._id){
+        preCondition.userId = app.globalData.userInfo._id;
+      }else{
+        reject('用户信息还没加载，无法进行互动查询');
+      }
+
+      const db = wx.cloud.database();
+
+      let search = db.collection('signup_records').field({
+        activityId:true
+      });
 
       const command = db.command;
 
-      if(condition.title){
-        condition.title = db.RegExp({
-          regexp: condition.title,
-          options: 'i',
-        })
+      search=search.where(preCondition);
+
+      if(condition.search!='singed'&&condition.search!='ended') {
+        resolve([]);
+        return;
       }
 
-      switch(condition.search){
-        case 'singed':condition.status = command.lt(this.STATUS_ENDED);break;
-        case 'ended':condition.status = command.gte(this.STATUS_ENDED);break;
-        case 'published':condition.status = command.lt(this.STATUS_ENDED);break;
-      }
-
-      condition.search = undefined;
-
-      if(condition.startDate){
-        condition.startDate = command.gte(condition.startDate);
-      }
-
-      if(condition.endDate){
-        condition.endDate = command.lte(condition.endDate);
-      }
-      
-      search=condition?search.where(condition):search;
-      search=start?search.skip(start):search;
-      search=count?search.limit(count):search;
-    
       return search.get({
         success: function(res){
-            resolve(res.data);
+          const ids=[];
+          res.data.reduce(function(result,item){
+            result.push(item.activityId);
+            return result;
+          },ids);
+          resolve(ids);
         }.bind(this),
         fail: err => {
           console.error('[数据库] [查询记录] 失败：', err);
           reject(err);
         }
-      })
-    }.bind(this))
+      });
+
+    });
   }
 
   getById(id) {

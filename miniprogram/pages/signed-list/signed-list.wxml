@@ -21,7 +21,7 @@
           <view class="list-item-title" >{{item.name}}{{item.isAttended?'(已签到)':'(未签到)'}}</view>
         </view>
           <view class="actions">   
-            <navigator url="/pages/signup/signup?_id={{item._id}}" wx:if="{{userInfo._id==item.userId}}" class="btn action" >编辑</navigator>
+            <navigator url="/pages/signup/signup?_id={{item._id}}&action=view" wx:if="{{userInfo._id==item.userId||isAdmin}}" class="btn action" >查看</navigator>
             <button id="{{item._id}}" data-desc="退出活动" bindtap="signout" wx:if="{{userInfo._id==item.userId}}" class="btn action" >退出</button>
             <button id="{{item._id}}" bindtap="signin" wx:if="{{isAdmin&&!item.isAttended}}" class="btn action" bindtap="setAttendance" >签到</button>
             <button id="{{item._id}}" data-desc="踢除" bindtap="signout" wx:if="{{isAdmin}}" class="btn action" >踢除</button>

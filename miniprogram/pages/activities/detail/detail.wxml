@@ -1,7 +1,7 @@
 <image src="{{activity.images[0]}}" class="filter"></image>
 <view class="head">
   <view class="cover">
-    <navigator url="" class="playUrl">
+    <navigator url="" class="cover">
       <image src="{{activity.images[0]}}" style="width:290rpx;height:290rpx;"></image>
     </navigator>
     <view class="jianjie">
@@ -18,6 +18,12 @@
         <view>
           <view class="subject">活动日期</view>
           <text class="rateN">{{activity.startDate}} ~ {{activity.endDate}}</text>
+        </view>
+      </view>
+      <view>
+        <view>
+          <view class="subject">活动类型</view>
+          <text class="rateN">{{activity.typeText}}</text>
         </view>
       </view>
       <view>
@@ -86,5 +92,5 @@
   </view>
   <navigator url=""></navigator>
 </view> -->
-<navigator url="../../signup/signup?title={{activity.title}}&id={{activity._id}}" class="signup">立即报名</navigator>
+<navigator url="../../signup/signup?id={{activity._id}}&&action=save" class="signup">立即报名</navigator>
 <view style="height:100px;"></view>
