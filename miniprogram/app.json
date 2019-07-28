@@ -32,7 +32,7 @@
       }
     ]
   },
-  "debug": true,
+  "debug": false,
   "networkTimeout": {
     "request": 10000,
     "downloadFile": 10000
