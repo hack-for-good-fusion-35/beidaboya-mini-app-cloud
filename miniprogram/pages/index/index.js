@@ -24,6 +24,7 @@ Page({
 
           wx.showLoading({
             title: '正在获取用户信息',
+            mask: true
           })
 
           wx.getUserInfo({

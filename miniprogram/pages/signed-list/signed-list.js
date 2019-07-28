@@ -56,7 +56,8 @@ Page({
         if(res.confirm){
 
           wx.showLoading({
-            title:'正在'+desc
+            title:'正在'+desc,
+            mask: true
           });
 
           activityService.signout(id).then(function(){

@@ -66,12 +66,12 @@ class ActivityService {
     // }]
   }
 
-  find(condition,start,count) {
+  find(condition,start,count,searchAll) {
 
     condition = lodash.clone(condition);
 
     return new Promise(function(resolve,reject){
-      this.preFind(condition,start,count).
+      this.preFind(condition,start,count,searchAll).
           then(function(ids){
 
             const db = wx.cloud.database();
@@ -105,6 +105,7 @@ class ActivityService {
             search=condition?search.where(condition):search;
             search=start?search.skip(start):search;
             search=count?search.limit(count):search;
+            search=searchAll?search.orderBy('updateDate','desc'):search;
 
             if(ids&&ids.length>0){
               condition._id = command.in(ids);
@@ -128,7 +129,7 @@ class ActivityService {
 
   }
 
-  preFind(condition,start,count){
+  preFind(condition,start,count,searchAll){
     return new Promise(function(resolve,reject){
 
       const preCondition = {};
@@ -149,7 +150,7 @@ class ActivityService {
 
       search=search.where(preCondition);
 
-      if(condition.search!='singed'&&condition.search!='ended') {
+      if(searchAll || (condition.search!='singed'&&condition.search!='ended')) {
         resolve([]);
         return;
       }
@@ -210,6 +211,7 @@ class ActivityService {
 
   save(activity){
     activity.status = parseInt(activity.status);
+    activity.updateDate = Date.now();
     if(!activity._id){
       return this.add(activity);
     }else{

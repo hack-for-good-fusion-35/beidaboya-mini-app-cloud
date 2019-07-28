@@ -78,7 +78,7 @@ var pageConfig = {
   },
   loadActivities:function(){
 
-    activityService.find(this.data.form,this.data.start, this.data.counts).then(function(response) {
+    activityService.find(this.data.form,this.data.start, this.data.counts,this.data.isAdmin).then(function(response) {
       
         if(response.length<1||response.length<this.data.counts){
           this.setData({

@@ -64,6 +64,7 @@ Page({
     if(params && params._id){
       wx.showLoading({
         title: '正在获取活动信息',
+        mask: true
       });
 
       activityService.getById(params._id).then(function(activity){
@@ -157,12 +158,13 @@ Page({
 
         wx.showLoading({
           title: '上传中',
+          mask: true
         })
 
         const filePath = res.tempFilePaths[0]
         
         // 上传图片
-        const cloudPath = Date.now() + filePath.match(/\.[^.]+?$/)[0]
+        const cloudPath = this.data.form._id+'/'+Date.now() + filePath.match(/\.[^.]+?$/)[0]
         wx.cloud.uploadFile({
           cloudPath,
           filePath,
@@ -212,7 +214,8 @@ Page({
   },
   delImg:function(e){
     wx.showLoading({
-      title:'正在删除图片'
+      title:'正在删除图片',
+      mask: true
     });
     
     wx.cloud.deleteFile({

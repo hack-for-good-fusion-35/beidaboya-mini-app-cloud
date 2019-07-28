@@ -12,8 +12,9 @@ Page({
   var id=param._id;
 
    wx.showLoading({
-    title: '正在加载活动内容'
-  })
+    title: '正在加载活动内容',
+    mask: true
+  });
 
    activityService.getById(id).then(function(response){
 
