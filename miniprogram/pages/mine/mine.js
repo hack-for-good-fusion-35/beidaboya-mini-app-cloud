@@ -40,16 +40,16 @@ Page({
   myActivities: function (e) {
     wx.navigateTo({
       url: '/pages/activities/activities?search=singed'
-    })
+    });
   },
   historyActivities: function (e) {
     wx.navigateTo({
       url: '/pages/activities/activities?search=ended'
-    })
+    });
   },
   adminList: function (e) {
     wx.navigateTo({
       url: '/pages/admin-list/admin-list'
-    })
+    });
   },
 })

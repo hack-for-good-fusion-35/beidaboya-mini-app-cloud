@@ -13,7 +13,7 @@ const formFields = [{
   name:'status',
   type:'picker',
   values:activityService.getStatus(),
-  text:'请选择活动状态',
+  placeholder:'请选择活动状态',
   description:'活动状态',
   validates:['not-empty']
 },{
@@ -23,13 +23,13 @@ const formFields = [{
 },{
   name:'startDate',
   type:'date',
-  text:'请选择开始日期',
+  placeholder:'请选择开始日期',
   description:'开始日期',
   validates:['not-empty']
 },{
   name:'endDate',
   type:'date',
-  text:'请选择结束日期',
+  placeholder:'请选择结束日期',
   description:'结束日期',
   validates:['not-empty']
 },{
@@ -44,7 +44,7 @@ const formFields = [{
   name:'type',
   type:'picker',
   values: activityService.getTypes(),
-  text:'请选择活动类型',
+  placeholder:'请选择活动类型',
   description:'活动类型',
   validates:['not-empty']
 }];
@@ -120,11 +120,9 @@ Page({
           this.setData({
             canSubmit:true
           });
-
-          var pages = getCurrentPages();
-          pages[pages.length-1].onLoad();
-          wx.switchTab({
-            url: '/pages/index/index'
+          
+          wx.navigateTo({
+            url: '/pages/activities/activities?search=singed'
           })
         }.bind(this),2000);
         
@@ -176,13 +174,16 @@ Page({
               _id:this.data.form._id,
               images:this.data.form.images
             }).then(function(){
+
+              this.requireRefresh();
+
               this.setData({
                 form:this.data.form
             });
 
             this.setData({
               form:this.data.form
-            })      
+            });      
 
             }.bind(this));
           }.bind(this),
@@ -222,6 +223,8 @@ Page({
       fileList: [e.target.id],
       success: res => {
       
+        this.requireRefresh();
+
         this.data.form.images.forEach(function(v,index){
           if(v==e.target.id){
             this.data.form.images.splice(index,1);
@@ -249,5 +252,34 @@ Page({
         wx.hideLoading()
       }
     });
+  },
+  setAsCover:function(e){
+    let index = e.target.dataset.index; 
+
+    this.data.form.images.unshift(this.data.form.images.splice(index,1));
+
+    activityService.update({
+      _id:this.data.form._id,
+      images:this.data.form.images
+    }).then(function(){
+      this.setData({
+        form:this.data.form
+      });
+
+      wx.showToast({
+        title: '成功设置封面',
+        icon: 'none'
+      });
+
+      this.requireRefresh();
+
+    }.bind(this));
+  },
+  requireRefresh:function(){
+    var pages = getCurrentPages();
+    pages[pages.length-2].setData({
+      willRefresh:true
+    });
   }
+
 });

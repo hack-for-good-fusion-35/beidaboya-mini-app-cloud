@@ -12,27 +12,27 @@ const formFields = [{
 {
   name:'startDate',
   type:'date',
-  text:'请选择开始日期',
+  placeholder:'请选择开始日期',
   description:'开始日期'
 },
 {
   name:'endDate',
   type:'date',
-  text:'请选择结束日期',
+  placeholder:'请选择结束日期',
   description:'结束日期'
 },
 {
   name:'type',
   type:'picker',
   values: activityService.getTypes(),
-  text:'请选择活动类型',
+  placeholder:'请选择活动类型',
   description:'活动类型'
 },
 {
   name:'status',
   type:'picker',
   values:activityService.getStatus(),
-  text:'请选择活动状态',
+  placeholder:'请选择活动状态',
   description:'活动状态'
 }];
 
@@ -44,17 +44,21 @@ var pageConfig = {
     form:{
 
     },
-    indexData: {
-      activities:[]
-    },
+    activities:[],
     counts: 10,
     start: 0,
-    runOutOfData:false
+    runOutOfData:false,
+    willRefresh:false
   },
-  onLoad: function(params) {
-
-    this.start=0;
-    this.data.form = {};
+  onLoad:function(params) {
+    
+    this.setData({
+      params:params,
+      willRefresh:false,
+      activities:[],
+      start:0,
+      form:{}
+    });
 
     this.data.form.search = params.search;
     this.data.form.type = params.type;
@@ -69,6 +73,11 @@ var pageConfig = {
         this.initPage();
       }.bind(this));  
     } 
+  },
+  onShow: function(){
+    if(this.data.willRefresh){
+      this.onLoad(this.data.params);
+    }
   },
   initPage:function(){
     this.setData({
@@ -85,9 +94,9 @@ var pageConfig = {
             runOutOfData:true
           });
         }
-        let newList = this.data.indexData.activities.concat(response)
+        let newList = this.data.activities.concat(response)
         this.setData({
-          'indexData.activities': newList,
+          'activities': newList,
           start: this.data.start + this.data.counts
         })
       }.bind(this)).
@@ -97,9 +106,6 @@ var pageConfig = {
         icon: 'none'
       })
     });
-  },
-  onShow: function() {
-
   },
   onReachBottom: function() {
     if(!this.data.runOutOfData){
@@ -112,13 +118,18 @@ var pageConfig = {
     });
   },
   search:function(){
-    this.data.indexData.activities = [];
+    this.data.activities = [];
     this.setData({
-      indexData:this.data.indexData,
+      activities:this.data.activities,
       start:0,
       collapsed:true
     });
     this.loadActivities();
+  },
+  navigate:function(e){
+    wx.navigateTo({
+      url: e.target.dataset.url
+    })
   }
 }
 

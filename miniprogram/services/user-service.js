@@ -33,7 +33,7 @@ class UserService{
         return this.add(userInfo);//用户第一次授权会在数据中添加一条信息
       }
       userInfo = userInfos[0];
-      console.info('获取到用户信息'+userInfo);
+      console.info('获取到用户信息'+JSON.stringify(userInfo));
       app.globalData.userInfo=userInfo;
       event.emit('setUserInfo',userInfo);
       return userInfo;

@@ -1,6 +1,6 @@
 <view class="head">
   <view class="searchBar">
-      <icon class="iconfont icon-collapse {{collapsed?'icon-RectangleCopy1':'icon-RectangleCopy'}}" bindtap="toggleSearchBar"></icon>
+      <icon class="iconfont icon-collapse {{collapsed?'icon-RectangleCopy':'icon-RectangleCopy1'}}" bindtap="toggleSearchBar"></icon>
       <input type="text" value="{{form.title}}" placeholder='请输入...' bindchange="titleInput" />
       <icon bindtap="search" class="iconfont icon-search"></icon>
   </view>
@@ -34,14 +34,14 @@
 
 
 <!-- <swiper style="height:150rpx;" autoplay="true" interval="2000" circular="true">
-  <block wx:for="{{indexData.swiperImg}}" wx:key="*this">
+  <block wx:for="{{swiperImg}}" wx:key="*this">
     <swiper-item>
       <image src="{{item}}" style="height:100%;width:100%;"></image>
     </swiper-item>
   </block>
 </swiper> -->
 
-<block wx:for="{{indexData.activities}}" wx:key="keys">
+<block wx:for="{{activities}}" wx:key="keys">
   <navigator style="position:relative;" url="/pages/activities/detail/detail?title={{item.title}}&_id={{item._id}}">
     <view style="height:216rpx;" class="activity">
       <image src="{{item.images[0]}}" style="height:172rpx;width:200rpx;"></image>
@@ -58,11 +58,11 @@
             <text>剩余名额:{{item.participants.length}}</text>
           </view> -->
           <view class="singed" wx:if="{{isAdmin}}" >
-            <navigator url="/pages/publish/publish?_id={{item._id}}" class="btn" >编辑</navigator>
+            <button catchtap="navigate" data-url="/pages/publish/publish?_id={{item._id}}" class="btn" >编辑</button>
           </view>
 
           <view class="singed" >
-            <navigator url="/pages/signup/signup?id={{item._id}}&&action=save" class="btn" >报名</navigator>
+            <button catchtap="navigate" data-url="/pages/signup/signup?id={{item._id}}&&action=save" class="btn" >报名</button>
           </view>
 
         </view>

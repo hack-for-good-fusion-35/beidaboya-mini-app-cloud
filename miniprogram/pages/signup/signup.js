@@ -15,7 +15,7 @@ const formFields = [{
     {value:1,text:'男'},
     {value:2,text:'女'}
   ],
-  text:'请选择报名人性别',
+  placeholder:'请选择报名人性别',
   description:'报名人性别',
   validates:['not-empty']
 },{
@@ -38,7 +38,7 @@ const formFields = [{
   name:'politicalStatus',
   type:'picker',
   values:userService.getTypes(),
-  text:'请选择报名人政治面貌',
+  placeholder:'请选择报名人政治面貌',
   description:'报名人政治面貌',
   validates:['not-empty']
 },{

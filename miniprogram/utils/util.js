@@ -76,6 +76,8 @@ function initForm(page,target,formFields){
       }else{
         field.text = value;
       }
+    }else{
+      field.text = field.placeholder;
     } 
   });
 

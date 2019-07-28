@@ -89,7 +89,10 @@ class ActivityService {
             switch(condition.search){
               case 'singed':condition.status = command.lt(this.STATUS_ENDED);break;
               case 'ended':condition.status = command.gte(this.STATUS_ENDED);break;
-              case 'published':condition.status = command.lt(this.STATUS_ENDED);break;
+              case 'published':
+                condition.status = command.lt(this.STATUS_ENDED);
+                search=search.orderBy('startDate','desc');
+              break;
             }
 
             condition.search = undefined;

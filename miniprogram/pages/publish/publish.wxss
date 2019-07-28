@@ -1,8 +1,7 @@
 @import "/pages/activities/detail/detail.wxss";
 
 .img-del{
-  position:absolute;
-  top:0px;
+  margin-right:5rpx;
 }
 
 .add-resource{
@@ -12,4 +11,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.img-item{
+  position:relative;
+}
+
+.img-item image{
+  
+}
+
+.function-block{
+  display:inline-block;
+  position:absolute;
+  top:0rpx;
+  left:0rpx;
+}
+
+.function-block button{
+  display:inline-block;
 }
