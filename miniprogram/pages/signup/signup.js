@@ -70,7 +70,7 @@ Page({
       const pages = getCurrentPages();
       const signedListPage = pages[pages.length-2];
       participant = _.clone(_.find(signedListPage.data.participants,function(o){
-        return o.userId == app.globalData.userInfo._id
+        return o.userId == params.userId
       }));
       canEdit=false;
     }
