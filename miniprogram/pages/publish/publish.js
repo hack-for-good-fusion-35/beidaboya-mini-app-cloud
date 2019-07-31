@@ -256,7 +256,7 @@ Page({
   setAsCover:function(e){
     let index = e.target.dataset.index; 
 
-    this.data.form.images.unshift(this.data.form.images.splice(index,1));
+    this.data.form.images.unshift(this.data.form.images.splice(index,1)[0]);
 
     activityService.update({
       _id:this.data.form._id,
