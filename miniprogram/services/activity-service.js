@@ -215,12 +215,13 @@ class ActivityService {
   save(activity){
     activity.status = parseInt(activity.status);
     activity.updateDate = Date.now();
+    activity.numberLimit = parseInt(activity.numberLimit);
     if(!activity._id){
       return this.add(activity);
     }else{
       return this.update(activity);
     }
-  }
+  } 
 
   add(activity) {
     return new Promise(function(resolve,reject){
@@ -305,33 +306,39 @@ class ActivityService {
     return new Promise(function(resolve,reject){
       const db = wx.cloud.database();
 
-      var id = signupRecord._id;
-      signupRecord._id = undefined;
+      const _id = signupRecord._id;
+      signupRecord._id=undefined;
+      signupRecord = lodash.clone(signupRecord);
 
-      db.collection('signup_records').doc(id).update({
-        data: signupRecord,
+      wx.cloud.callFunction({
+        name: "updateSignup",
+        data: {
+          _id : _id,
+          signupRecord : signupRecord
+        },
         success: res => {
-            resolve({
-              success:true,
-              message:'更新报名信息成功'
-            });
+          resolve({
+            success:true,
+            message:'更新报名信息成功'
+          });
         },
         fail: err => {
-          let message = '更新报名信息失败';
           reject({
             success:false,
-            message:message
-          })
+            message:'更新报名信息失败'
+          });
         }
-      });
+      });   
     });
   }
 
   signout(_id){
     return new Promise(function(resolve,reject){
-      const db = wx.cloud.database()
-
-      db.collection('signup_records').doc(_id).remove({
+      wx.cloud.callFunction({
+        name: "signout",
+        data: {
+          _id: _id,
+        },
         success: res => {
           resolve({
             success:true,
@@ -339,13 +346,12 @@ class ActivityService {
           });
         },
         fail: err => {
-          let message = '失败';
           reject({
             success:false,
-            message:message
+            message:'失败'
           });
         }
-      })
+      });      
     });
   }
 

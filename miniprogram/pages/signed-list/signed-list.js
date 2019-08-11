@@ -107,7 +107,6 @@ Page({
     });
     target.isAttended=true;
     
-
     activityService.updateSignup({
       _id:id,
       isAttended:target.isAttended
