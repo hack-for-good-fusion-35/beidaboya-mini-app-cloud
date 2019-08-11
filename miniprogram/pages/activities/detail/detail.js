@@ -61,8 +61,8 @@ Page({
    */
   onShareAppMessage: function () {
     return {
-      title: "北达博雅金花社区小程序首页",
-      path: "pages/activities/activities"
+      title: this.data.activity.title,
+      path: "pages/activities/detail/detail?_id=" + this.data.activity._id
     }
   }
 })
