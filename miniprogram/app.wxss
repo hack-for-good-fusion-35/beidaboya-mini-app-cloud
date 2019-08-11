@@ -102,12 +102,12 @@
 
 .btn {
   width: 90rpx;
-  height: 54rpx;
+  height: 50rpx;
   border: 0px solid #f76968;
   background-color: #f76968;
   color:white;
   border-radius: 8rpx;
-  line-height: 54rpx;
+  line-height: 50rpx;
   text-align: center;
   font-size: 24rpx;
   padding:0px;
@@ -117,4 +117,9 @@
 checkbox .wx-checkbox-input {
   width: 24rpx;
   height: 24rpx;
+}
+
+.form-with-footer{
+  display:block;
+  margin-bottom:80rpx;
 }

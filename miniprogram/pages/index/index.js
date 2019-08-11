@@ -1,6 +1,7 @@
 const app = getApp()
 const userService = require('../../services/user-service')
 const activityService = require('../../services/activity-service')
+const event = require('../../utils/event')
 
 Page({
 
@@ -17,50 +18,54 @@ Page({
    */
   onLoad: function (options) {
     // 获取用户信息
+    if(app.globalData.logined){
+      this.getUserInfo();
+    }
+
+    event.on('login',this,function(logined){
+      if(logined){
+        this.getUserInfo();
+      }
+    });
+
+  },
+
+  getUserInfo:function(){
+    wx.showLoading({
+      title: '正在获取用户信息',
+      mask: true
+    });
+
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-
-          wx.showLoading({
-            title: '正在获取用户信息',
-            mask: true
+          wx.getUserInfo({
+            success: function(res){
+              // 可以将 res 发送给后台解码出 unionId
+              this.getUserInfoDetail(res.userInfo).
+              then(function(){
+                wx.hideLoading();
+              });
+            }.bind(this),
+            fail: function(err){
+              this.reLogin();
+            }.bind(this)
           });
-          
-          this.getUserInfo();
         }else{
-          //userInfo if fale, will show the modal
+          wx.hideLoading();
           this.setData({
             userInfo:false
           });
         }
       },
-      fail: function(res){
+      fail: function(err){
+        wx.hideLoading();
         this.setData({
           userInfo:false
         });
-      }.bind(this)
-    })
-  },
-
-  getUserInfo:function(){
-    wx.getUserInfo({
-      success: function(res){
-        // 可以将 res 发送给后台解码出 unionId
-        this.login(res.userInfo).
-        then(function(){
-          wx.hideLoading();
-        });
-        // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-        // 所以此处加入 callback 以防止这种情况
-        if (app.userInfoReadyCallback) {
-          app.userInfoReadyCallback(res)
-        }
-      }.bind(this),
-      fail: function(err){
-        this.reLogin();
-      }.bind(this)
-    });
+      }
+    }); 
   },
 
   reLogin:function(){
@@ -123,22 +128,25 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return {
+      title: "北达博雅金花社区小程序首页",
+      path: "pages/index/index"
+    }
   },
 
   onGetUserInfo: function (e) {
-    if (!app.globalData.userInfo && e.detail.userInfo) {   
-      this.login(e.detail.userInfo);
+    if (e.detail.userInfo) {   
+      this.getUserInfoDetail(e.detail.userInfo);
     }
   },
   
-  login(userInfo){
+  getUserInfoDetail(userInfo){
     return userService.setUserInfo(userInfo).then(function(){
       this.setData({
         userInfo:app.globalData.userInfo
       });
     }.bind(this)).
-    catch(function(){
+    catch(function(err){
       this.reLogin();
     }.bind(this));
   }

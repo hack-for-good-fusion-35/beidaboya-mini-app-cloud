@@ -1,7 +1,7 @@
 <!-- <import src="../../common/templates/mm-radio.wxml" /> -->
 <!-- <import src="../../common/template/address-picker.wxml" /> -->
 <view>
-    <form name="publishForm" novalidate>
+    <form name="publishForm" class="form-with-footer" novalidate>
         <view class="form-edit">
 			<input hidden="true" value="{{form._id}}" />
 	        <view class="form-view">
@@ -61,35 +61,50 @@
 				<view>活动照片</view>
 				<view class="activities-number">{{form.images.length}}</view>
 			</view>
-			<!--  <view class="list-oneImg">
-				<image bindtap="imgPreview" data-list="{{form.images}}" data-src="{{oneImg}}" wx:for="{{form.images}}" wx:for-item="oneImg" src="{{oneImg}}"></image>
-			</view> -->
+
 			<scroll-view scroll-x class="scr-H">
-				
-					<view class="img-item scr-H-item"  wx:for="{{form.images}}" wx:key="{{imagesKey}}" hover-class="none">
+					<view class="img-item scr-H-item"  wx:for="{{form.images}}" wx:key="{{imageKey}}" hover-class="none">
 						<image bindtap="imgPreview" src="{{item}}" data-list="{{form.images}}" data-src="{{oneImg}}" class="short" ></image>
 						<view class="function-block">
-							<button id="{{item}}" bindtap="delImg" style="width:60rpx;" class="btn img-del">删除</button>
+							<button id="{{item}}" data-type="image" bindtap="delImg" style="width:60rpx;" class="btn img-del">删除</button>
 							<button wx:if="{{index!=0}}" data-index="{{index}}" bindtap="setAsCover" style="width:60rpx;" class="btn img-del">封面</button>
 						</view>
 					</view> 
-				
+			</scroll-view> 
+		</view>
+
+		<view wx:if="{{form.vedios && form.vedios.length>0 }}" class="warp" style="height:278rpx;">
+			<view class="tBar">
+				<view>活动视频</view>
+				<view class="activities-number">{{form.vedios.length}}</view>
+			</view>
+
+			<scroll-view scroll-x class="scr-H">
+					<view class="img-item scr-H-item"  wx:for="{{form.vedios}}" wx:key="{{vedioKey}}" hover-class="none">
+						<video id="{{item}}" class="short" src="{{item}}" />
+
+						<view class="function-block">
+							<button id="{{item}}" data-type="vedio" bindtap="delImg" style="width:60rpx;" class="btn img-del">删除</button>
+						</view>
+					</view> 
 			</scroll-view> 
 		</view>
 
 	   	<!-- <view class="operation">
 	   		<template is="mm-radio" data="{{...items}}"></template>
 	    </view> -->
-	   	<view class="btnBox">
-	    	<button disabled="{{!canSubmit}}" class="submit-btn" bindtap="submitBtn">
-	        	<text>保存活动</text>
-	    	</button>
-	    </view>
+	   	
     </form>
-</view>
-
-<button disabled="{{!canSubmit}}" bindtap="doUpload" class="btn add-resource" size="10" style="width:250rpx;">添加图片或视频</button>
-
+	<view class="btnBox">
+	    <button disabled="{{!canSubmit}}" class="submit-btn" bindtap="submitBtn">
+	        <text>保存活动</text>
+	    </button>
+	</view>
+</view> 
+<div class="add-resource">
+<button disabled="{{!canSubmit}}" bindtap="uploadVideo" class="btn" size="10" style="width:120rpx;margin-right:20rpx;">添加视频</button>
+<button disabled="{{!canSubmit}}" bindtap="uploadImage" class="btn" size="10" style="width:120rpx;">添加图片</button>
+</div>
 <view mm-loading-animation ng-if="loading"></view>
 
 <!-- <template is="city" data="{{...array}}"></template> -->

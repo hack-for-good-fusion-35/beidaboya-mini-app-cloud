@@ -7,7 +7,7 @@ Page({
     activity: {},
     flexed: false
   },
-
+ 
   onLoad: function (param) {
   var id=param._id;
 
@@ -55,5 +55,14 @@ Page({
     this.setData({
       flexed: !this.data.flexed
     })
+  },
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    return {
+      title: "北达博雅金花社区小程序首页",
+      path: "pages/activities/activities"
+    }
   }
 })

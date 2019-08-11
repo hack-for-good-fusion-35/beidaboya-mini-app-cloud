@@ -48,7 +48,7 @@
   <scroll-view scroll-x style="width:100%;height:125rpx;margin:10rpx">
     <view class="participants">
       <view wx:for="{{activity.participants}}" wx:key="{{participants}}" class="acItem">
-        <image src="{{item.avatarUrl}}" style="width:100rpx;height:100rpx;margin-bottom:5rpx;"></image>
+        <image src="{{item.avatarUrl}}" style="width:80rpx;height:80rpx;margin-bottom:5rpx;"></image>
         <view class="textOver">{{item.nickName}}</view>
       </view>
     </view>
@@ -67,6 +67,19 @@
     <view class="spa scr-H-item"></view>
   </scroll-view>
 </view>
+
+<view wx:if="{{activity.vedios && activity.vedios.length>0 }}" class="warp" style="height:278rpx;">
+			<view class="tBar">
+				<view>活动视频</view>
+				<view class="activities-number">{{activity.vedios.length}}</view>
+			</view>
+
+			<scroll-view scroll-x class="scr-H">
+					<view class="img-item scr-H-item"  wx:for="{{activity.vedios}}" wx:key="{{vedioKey}}" hover-class="none">
+						<video id="{{item}}" class="short" src="{{item}}" />
+					</view> 
+			</scroll-view> 
+		</view>
 <!-- <view class="participant">
   <view class="mark-head">
     <view class="au-mark">参加者评论</view>

@@ -162,7 +162,7 @@ page {
 }
 
 .textOver {
-  width: 130rpx;
+  width:100rpx;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -217,7 +217,7 @@ page {
   bottom: 0;
   width: 100%;
   text-align: center;
-  line-height: 94rpx;
+  line-height: 80rpx;
   color: #fff;
   font-size: 36rpx;
 }

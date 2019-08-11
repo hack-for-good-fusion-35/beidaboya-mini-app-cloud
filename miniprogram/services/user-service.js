@@ -31,6 +31,8 @@ class UserService{
         resolve(userInfo);
       }else{
         let openid = app.globalData.openid;
+        if(!openid)throw 'openid 不能为空'
+
         this.find({
           _id: openid
         }).then(function(userInfos){

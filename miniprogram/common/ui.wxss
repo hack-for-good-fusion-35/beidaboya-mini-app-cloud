@@ -18,7 +18,7 @@
   bottom: 0;
   width: 100%;
   text-align: center;
-  line-height: 94rpx;
+  line-height: 80rpx;
   color: #fff;
   font-size: 36rpx;
   border-radius:0px;

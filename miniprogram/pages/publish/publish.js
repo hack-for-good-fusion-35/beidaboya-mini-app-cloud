@@ -138,7 +138,7 @@ Page({
     }.bind(this));
 
   },
-  doUpload: function () {
+  uploadImage: function () {
     if(!this.data.form._id){
       wx.showToast({
         icon: 'none',
@@ -149,13 +149,13 @@ Page({
 
     // 选择图片
     wx.chooseImage({
-      count: 1,
+      count: 5,
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: function (res) {
 
         wx.showLoading({
-          title: '上传中',
+          title: '上图片传中',
           mask: true
         })
 
@@ -167,7 +167,7 @@ Page({
           cloudPath,
           filePath,
           success: function(res) {
-          
+            if(!this.data.form.images)this.data.form.images=[];
             this.data.form.images.push(res.fileID)
  
             activityService.save({
@@ -204,6 +204,68 @@ Page({
       }
     })
   },
+
+  uploadVideo: function () {
+    if(!this.data.form._id){
+      wx.showToast({
+        icon: 'none',
+        title: '请先保存活动再添加视频',
+      });
+      return;
+    }
+
+    wx.chooseVideo({
+      maxDuration: 60,
+      sourceType: ['album', 'camera'],
+      camera: 'back',
+      success: function (res) {
+
+        wx.showLoading({
+          title: '上视频传中',
+          mask: true
+        }) 
+
+        const filePath = res.tempFilePath;
+        
+        const cloudPath = this.data.form._id+'/vedio-'+Date.now() + filePath.match(/\.[^.]+?$/)[0]
+        wx.cloud.uploadFile({
+          cloudPath,
+          filePath,
+          success: function(res) {
+            if(!this.data.form.vedios)this.data.form.vedios=[];
+            this.data.form.vedios.push(res.fileID)
+ 
+            activityService.save({
+              _id:this.data.form._id,
+              vedios:this.data.form.vedios
+            }).then(function(){
+              this.setData({
+                form:this.data.form
+            });
+
+            this.setData({
+              form:this.data.form
+            });      
+
+            }.bind(this));
+          }.bind(this),
+          fail: e => {
+            wx.showToast({
+              icon: 'none',
+              title: '上传失败',
+            })
+          },
+          complete: () => {
+            wx.hideLoading()
+          }
+        })
+      }.bind(this),
+      fail: e => {
+        console.error(e)
+      }
+    })
+  },
+
   imgPreview:function(event){
     var src = event.currentTarget.dataset.src;//获取data-src
     var imgList = event.currentTarget.dataset.list;//获取data-list
@@ -215,27 +277,42 @@ Page({
   },
   delImg:function(e){
     wx.showLoading({
-      title:'正在删除图片',
+      title:'正在删除',
       mask: true
     });
-    
+
     wx.cloud.deleteFile({
       fileList: [e.target.id],
       success: res => {
       
         this.requireRefresh();
 
-        this.data.form.images.forEach(function(v,index){
-          if(v==e.target.id){
-            this.data.form.images.splice(index,1);
-            return true;
-          }
-        }.bind(this));
+        var activity = {
+          _id:this.data.form._id
+        }
 
-        activityService.save({
-          _id:this.data.form._id,
-          images:this.data.form.images
-        }).then(function(){
+        switch(e.target.dataset.type){
+          case 'image':
+              this.data.form.images.forEach(function(v,index){
+                if(v==e.target.id){
+                  this.data.form.images.splice(index,1);
+                  return true;
+                }
+              }.bind(this));
+              activity.images = this.data.form.images;
+              break;
+          case 'vedio':
+              this.data.form.vedios.forEach(function(v,index){
+                if(v==e.target.id){
+                  this.data.form.vedios.splice(index,1);
+                  return true;
+                }
+              }.bind(this));
+              activity.vedios = this.data.form.vedios;
+              break;
+        }
+
+        activityService.save(activity).then(function(){
           this.setData({
             form:this.data.form
           });

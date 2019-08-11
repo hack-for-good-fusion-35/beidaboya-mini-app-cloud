@@ -9,11 +9,8 @@ const _ = db.command;
 // 云函数入口函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
-  let signupRecord = event;
-  let id = signupRecord._id;
-  signupRecord._id = undefined;
-
-  return await db.collection('signup_records').doc(id).update({
-    data: signupRecord
+  
+  return await db.collection('signup_records').doc(event._id).update({
+    data: event.signupRecord
   });
 }
