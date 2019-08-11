@@ -163,3 +163,11 @@
 .form-view{
   display:flex;
 }
+
+.number-needed{
+  position:absolute;
+  top:10px;
+  font-size:26rpx;
+  color:#666;
+  right:10px;
+}

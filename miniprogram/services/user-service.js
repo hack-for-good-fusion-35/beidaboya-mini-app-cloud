@@ -23,26 +23,38 @@ class UserService{
   }
 
   setUserInfo(userInfo){
-    let openid = app.globalData.openid;
-    return this.find({
-      _id: openid
-    }).then(function(userInfos){
-      if(userInfos.length<1){
-        userInfo._id = openid;
-        userInfo.type=NORMAL_USER;
-        return this.add(userInfo);//用户第一次授权会在数据中添加一条信息
+    return new Promise(function(resolve,reject){
+      let userInfo;
+      if(userInfo=wx.getStorage({
+        key: 'userInfo'
+      })){
+        resolve(userInfo);
+      }else{
+        let openid = app.globalData.openid;
+        this.find({
+          _id: openid
+        }).then(function(userInfos){
+          if(userInfos.length<1){
+            userInfo._id = openid;
+            userInfo.type=NORMAL_USER;
+            return this.add(userInfo);//用户第一次授权会在数据中添加一条信息
+          }
+          userInfo = userInfos[0];
+          app.globalData.userInfo=userInfo;
+          event.emit('setUserInfo',userInfo);
+          wx.setStorage({
+            key: 'userInfo',
+            data: userInfo
+          });
+          resolve(userInfo);
+        }.bind(this)).catch(function(){
+          wx.showToast({
+            icon: 'none',
+            title: '无法获取用户信息'
+          });
+        }); 
       }
-      userInfo = userInfos[0];
-      console.info('获取到用户信息'+JSON.stringify(userInfo));
-      app.globalData.userInfo=userInfo;
-      event.emit('setUserInfo',userInfo);
-      return userInfo;
-    }.bind(this)).catch(function(){
-      wx.showToast({
-        icon: 'none',
-        title: '无法获取用户信息'
-      });
-    });
+    }.bind(this));
   }
 
   updateIfDiff(userInfo){
@@ -69,6 +81,10 @@ class UserService{
         data: updateUserInfo,
         success: res => {
           app.globalData.userInfo=userInfo;
+          wx.setStorage({
+            key: 'userInfo',
+            data: userInfo
+          });
           resolve(userInfo);
         },
         fail: err => {

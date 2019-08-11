@@ -25,21 +25,9 @@ Page({
           wx.showLoading({
             title: '正在获取用户信息',
             mask: true
-          })
-
-          wx.getUserInfo({
-            success: function(res){
-              // 可以将 res 发送给后台解码出 unionId
-              this.login(res.userInfo).then(function(){
-                wx.hideLoading()
-              });
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (app.userInfoReadyCallback) {
-                app.userInfoReadyCallback(res)
-              }
-            }.bind(this)
-          })
+          });
+          
+          this.getUserInfo();
         }else{
           //userInfo if fale, will show the modal
           this.setData({
@@ -51,11 +39,42 @@ Page({
         this.setData({
           userInfo:false
         });
-        // wx.navigateTo({
-        //   url: '/page/error-page/error-page?message=必须授权后才能使用',
-        // })
       }.bind(this)
     })
+  },
+
+  getUserInfo:function(){
+    wx.getUserInfo({
+      success: function(res){
+        // 可以将 res 发送给后台解码出 unionId
+        this.login(res.userInfo).
+        then(function(){
+          wx.hideLoading();
+        });
+        // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+        // 所以此处加入 callback 以防止这种情况
+        if (app.userInfoReadyCallback) {
+          app.userInfoReadyCallback(res)
+        }
+      }.bind(this),
+      fail: function(err){
+        this.reLogin();
+      }.bind(this)
+    });
+  },
+
+  reLogin:function(){
+    wx.hideLoading();
+    wx.showModal({
+      title: '登陆失败',
+      content: '请点击确定重新登陆',
+      showCancel:false,
+      success:function(res) {
+        if (res.confirm) {
+          this.getUserInfo();
+        }
+      }.bind(this)
+    });       
   },
 
   /**
@@ -118,6 +137,9 @@ Page({
       this.setData({
         userInfo:app.globalData.userInfo
       });
+    }.bind(this)).
+    catch(function(){
+      this.reLogin();
     }.bind(this));
   }
 })

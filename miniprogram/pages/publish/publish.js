@@ -38,8 +38,8 @@ const formFields = [{
   validates:['not-empty']
 },{
   name:'numberLimit',
-  description:'人数上限',
-  //validates:['not-empty']
+  description:'招募人数',
+  validates:['not-empty']
 },{
   name:'type',
   type:'picker',

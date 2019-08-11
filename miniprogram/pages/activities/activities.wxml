@@ -52,11 +52,14 @@
           <view class="list-item-content"><span>活动内容:</span></view>
           <view class="list-item-content">{{item.description}}</view>
         </view>
+        <view class="number-needed" >招募人数：{{item.numberLimit-item.numberJoined}}</view>
         <view class="signup">
         
           <!-- <view class="singed" >
             <text>剩余名额:{{item.participants.length}}</text>
           </view> -->
+          
+
           <view class="singed" wx:if="{{isAdmin}}" >
             <button catchtap="navigate" data-url="/pages/publish/publish?_id={{item._id}}" class="btn" >编辑</button>
           </view>

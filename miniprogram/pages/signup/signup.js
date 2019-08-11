@@ -33,7 +33,7 @@ const formFields = [{
 },{
   name:'nationalId',
   description:'报名人身份证号',
-  validates:['not-empty','nationalId']
+  validates:['nationalId']
 },{
   name:'politicalStatus',
   type:'picker',

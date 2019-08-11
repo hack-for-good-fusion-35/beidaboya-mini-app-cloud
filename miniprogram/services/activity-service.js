@@ -224,6 +224,8 @@ class ActivityService {
 
   add(activity) {
     return new Promise(function(resolve,reject){
+      activity.numberJoined = 0;
+
       const db = wx.cloud.database()
       db.collection('activities').add({
         data: activity,
@@ -247,6 +249,7 @@ class ActivityService {
     const updatedActivity=lodash.clone(activity);
     updatedActivity._openid=undefined;
     updatedActivity._id=undefined;
+
     return new Promise(function(resolve,reject){
       const db = wx.cloud.database();
       db.collection('activities').doc(activity._id).update({
