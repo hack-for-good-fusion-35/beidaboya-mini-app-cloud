@@ -213,56 +213,37 @@ class ActivityService {
   }
 
   save(activity){
-    activity.status = parseInt(activity.status);
     activity.updateDate = Date.now();
-    activity.numberLimit = parseInt(activity.numberLimit);
-    if(!activity._id){
-      return this.add(activity);
-    }else{
-      return this.update(activity);
+    if(activity.status){
+      activity.status = parseInt(activity.status);
     }
-  } 
+  
+    if(activity.numberLimit){
+      activity.numberLimit = parseInt(activity.numberLimit);
+    }
+    
+    const _id = activity._id;
 
-  add(activity) {
-    return new Promise(function(resolve,reject){
-      activity.numberJoined = 0;
-
-      const db = wx.cloud.database()
-      db.collection('activities').add({
-        data: activity,
-        success: res => {
-          if(res._id){
-            activity._id=res._id
-            resolve(activity)
-          }else{
-            throw '无法新增活动,id为空'
-          }
-        },
-        fail: err => {
-          console.error('[数据库] [新增记录] 失败：', err)
-          reject(err)
-        }
-      })
-    });
-  } 
-
-  update(activity){
-    const updatedActivity=lodash.clone(activity);
-    updatedActivity._openid=undefined;
-    updatedActivity._id=undefined;
+    if(_id){
+      activity._openid = undefined;
+      activity._id = undefined;
+      activity = lodash.clone(activity); 
+    }
 
     return new Promise(function(resolve,reject){
-      const db = wx.cloud.database();
-      db.collection('activities').doc(activity._id).update({
-        data: updatedActivity,
+      wx.cloud.callFunction({
+        name: "activity-save",
+        data: {
+          _id : _id,
+          activity : activity
+        },
         success: res => {
-          resolve(activity);
+          resolve(res);
         },
         fail: err => {
-          console.error('[数据库] [更新记录] 失败：', err)
           reject(err);
         }
-      })
+      });
     });
   }
 

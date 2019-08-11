@@ -62,7 +62,7 @@
   <scroll-view scroll-x class="scr-H">
     <view class="spa scr-H-item"></view>
     <view class="img-item scr-H-item"  wx:for="{{activity.images}}" wx:key="{{imagesKey}}" hover-class="none">
-						<image bindtap="imgPreview" src="{{item}}" data-list="{{activity.images}}" data-src="{{oneImg}}" class="short"></image>
+		    <image bindtap="imgPreview" src="{{item}}" data-list="{{activity.images}}" data-src="{{oneImg}}" class="short"></image>
 		</view> 
     <view class="spa scr-H-item"></view>
   </scroll-view>

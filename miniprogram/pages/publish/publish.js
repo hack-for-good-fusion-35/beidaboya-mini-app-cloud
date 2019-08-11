@@ -169,8 +169,8 @@ Page({
           success: function(res) {
           
             this.data.form.images.push(res.fileID)
-
-            activityService.update({
+ 
+            activityService.save({
               _id:this.data.form._id,
               images:this.data.form.images
             }).then(function(){
@@ -232,7 +232,7 @@ Page({
           }
         }.bind(this));
 
-        activityService.update({
+        activityService.save({
           _id:this.data.form._id,
           images:this.data.form.images
         }).then(function(){
@@ -258,7 +258,7 @@ Page({
 
     this.data.form.images.unshift(this.data.form.images.splice(index,1)[0]);
 
-    activityService.update({
+    activityService.save({
       _id:this.data.form._id,
       images:this.data.form.images
     }).then(function(){
