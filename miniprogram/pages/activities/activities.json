@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "SearchBar": "/components/searchBox/index"
-  },
-  "navigationBarTitleText": "活动列表"
-}
