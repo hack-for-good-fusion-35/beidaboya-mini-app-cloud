@@ -2,7 +2,7 @@
 本应用基于小程序云开发
 
 # 开发准备
-本应用需要创建users,activities,signup_records三个collection.
+本应用需要创建users,activities两个collection.
 本应用需要创建login云函数,用于获取openid.
 
 # 注意

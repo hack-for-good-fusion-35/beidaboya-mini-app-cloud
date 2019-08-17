@@ -42,7 +42,7 @@
 </swiper> -->
 
 <block wx:for="{{activities}}" wx:key="keys">
-  <navigator style="position:relative;" url="/pages/activities/detail/detail?title={{item.title}}&_id={{item._id}}">
+  <navigator style="position:relative;" url="/pages/activities/detail/detail?_id={{item._id}}">
     <view style="height:216rpx;" class="activity">
       <image src="{{item.images[0]}}" style="height:172rpx;width:200rpx;"></image>
       <view class="intro-warp">
@@ -52,7 +52,7 @@
           <view class="list-item-content"><span>活动内容:</span></view>
           <view class="list-item-content">{{item.description}}</view>
         </view>
-        <view class="number-needed" >招募人数：{{item.numberLimit-item.numberJoined}}</view>
+        <view class="number-needed" >需要人数：{{item.numberLimit-item.numberJoined}}</view>
         <view class="signup">
       
           <view class="singed" wx:if="{{isAdmin}}" >
@@ -60,7 +60,7 @@
           </view>
 
           <view class="singed" >
-            <button catchtap="navigate" data-url="/pages/signup/signup?id={{item._id}}&&action=save" class="btn" >报名</button>
+            <button catchtap="navigate" data-url="/pages/signup/signup?id={{item._id}}&&action=save" class="btn" disabled="{{(item.numberLimit-item.numberJoined)==0}}" >报名</button>
           </view>
 
         </view>

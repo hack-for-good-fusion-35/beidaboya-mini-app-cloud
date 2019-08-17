@@ -17,30 +17,27 @@ Page({
   });
 
    activityService.getById(id).then(function(response){
-
-   response.statusText=_.find(activityService.getStatus(),function(o){
-    return o.value==response.status;
-   }).text;
-
-   response.typeText = _.find(activityService.getTypes(),function(o){
-    return o.value==response.type;
-   }).text;
-
-   this.setData({
-      activity: response
-    })
     wx.hideLoading();
+    response.statusText=_.find(activityService.getStatus(),function(o){
+      return o.value==response.status;
+     }).text;
+  
+     response.typeText = _.find(activityService.getTypes(),function(o){
+      return o.value==response.type;
+     }).text;
+  
+     this.setData({
+        activity: response
+     });
+    
    }.bind(this)).
-   then(function(){
-    return activityService.findParticipants({
-      activityId:id
-    }).then(function(participants){
-      this.data.activity.participants = participants
-      this.setData({
-        activity:this.data.activity
+   catch(function(){
+      wx.hideLoading();
+      wx.showToast({
+        title: '获取活动详情失败',
+        icon: 'none'
       })
-    }.bind(this)); 
-   }.bind(this))   
+   });  
   },
   imgPreview:function(event){
     var src = event.currentTarget.dataset.src;//获取data-src
@@ -64,5 +61,15 @@ Page({
       title: this.data.activity.title,
       path: "pages/activities/detail/detail?_id=" + this.data.activity._id
     }
+  },
+  navigate:function(e){
+    wx.navigateTo({
+      url: e.target.dataset.url
+    })
+  },
+  requireRefresh:function(deep){
+    deep = ++deep;
+    var pages = getCurrentPages();
+    pages[pages.length-deep].requireRefresh(deep);
   }
 })

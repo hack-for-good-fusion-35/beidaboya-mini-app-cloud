@@ -121,8 +121,11 @@ Page({
             canSubmit:true
           });
           
-          wx.navigateTo({
-            url: '/pages/activities/activities?search=singed'
+          // wx.navigateTo({
+          //   url: '/pages/activities/activities?search=singed'
+          // })
+          wx.navigateBack({
+            delta: 1
           })
         }.bind(this),2000);
         
@@ -175,7 +178,7 @@ Page({
               images:this.data.form.images
             }).then(function(){
 
-              this.requireRefresh();
+              this.requireRefresh(1);
 
               this.setData({
                 form:this.data.form
@@ -285,7 +288,7 @@ Page({
       fileList: [e.target.id],
       success: res => {
       
-        this.requireRefresh();
+        this.requireRefresh(1);
 
         var activity = {
           _id:this.data.form._id
@@ -348,15 +351,14 @@ Page({
         icon: 'none'
       });
 
-      this.requireRefresh();
+      this.requireRefresh(1);
 
     }.bind(this));
   },
-  requireRefresh:function(){
+  requireRefresh:function(deep){
     var pages = getCurrentPages();
-    pages[pages.length-2].setData({
-      willRefresh:true
-    });
+    deep = ++deep;
+    pages[pages.length-deep].requireRefresh(deep);
   }
 
 });

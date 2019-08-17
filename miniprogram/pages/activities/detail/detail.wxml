@@ -36,20 +36,20 @@
   </view>
 </view>
 <view catchtap="flex">
-  <view class="tBar" style="background-color:white;margin:0px;padding:28rpx 0 20rpx 28rpx;" >活动简介</view>
+  <view class="tBar" style="background-color:white;margin:0px;padding:28rpx 0 20rpx 28rpx;" >活动简介 (招募人数:{{activity.numberLimit}})</view>
   <view class="description {{flexed?'':'flex'}}">{{activity.description}}</view>
   <view class="arrow {{flexed?'uparrow':'downarrow'}}"></view>
 </view>
 <view class="warp" >
   <navigator class="tBar" url="../../signed-list/signed-list?id={{activity.id}}" >
     <view>已报名人员</view>
-    <view class="participants-number">{{activity.participants.length}} 人已参加（点击进入列表）</view>
+    <view class="participants-number">{{activity.numberJoined}} 人已参加（点击进入列表）</view>
   </navigator>
   <scroll-view scroll-x style="width:100%;height:125rpx;margin:10rpx">
     <view class="participants">
-      <view wx:for="{{activity.participants}}" wx:key="{{participants}}" class="acItem">
-        <image src="{{item.avatarUrl}}" style="width:80rpx;height:80rpx;margin-bottom:5rpx;"></image>
-        <view class="textOver">{{item.nickName}}</view>
+      <view wx:if="{{item!=null}}" wx:for="{{activity.participants}}" wx:key="{{participants}}" class="acItem">
+          <image src="{{item.avatarUrl}}" style="width:80rpx;height:80rpx;margin-bottom:5rpx;"></image>
+          <view class="textOver">{{item.nickName}}</view>
       </view>
     </view>
   </scroll-view>
@@ -80,30 +80,5 @@
 					</view> 
 			</scroll-view> 
 		</view>
-<!-- <view class="participant">
-  <view class="mark-head">
-    <view class="au-mark">参加者评论</view>
-    <navigator url="" class="my-mark">我的短评</navigator>
-  </view>
-  <view>
-    <view wx:for="{{activity.pinlun.participant}}" class="participant-item">
-      <view class="avatarUrl">
-        <image src="{{item.avatarUrl}}" style="width:58rpx;height:58rpx; border-radius: 50%;"></image>
-      </view>
-      <view class="participantD">
-        <view>
-          <view class="nickName">{{item.nickName}}</view>
-          <view></view>
-        </view>
-        <view class="pWord">{{item.pWord}}</view>
-        <view class="dToa">
-          <view>{{item.date}}</view>
-          <view style="margin-right:36rpx;">{{item.admire}}</view>
-        </view>
-      </view>
-    </view>
-  </view>
-  <navigator url=""></navigator>
-</view> -->
-<navigator url="../../signup/signup?id={{activity._id}}&&action=save" class="signup">立即报名</navigator>
+<button catchtap="navigate" data-url="../../signup/signup?id={{activity._id}}&&action=save" disabled="{{(activity.numberLimit-activity.numberJoined)==0}}" class="signup">立即报名</button>
 <view style="height:100px;"></view>

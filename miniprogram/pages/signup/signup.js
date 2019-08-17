@@ -70,7 +70,7 @@ Page({
       const pages = getCurrentPages();
       const signedListPage = pages[pages.length-2];
       participant = _.clone(_.find(signedListPage.data.participants,function(o){
-        return o.userId == params.userId
+        return o && o._id == params.userId
       }));
       canEdit=false;
     }
@@ -118,6 +118,8 @@ Page({
             title: '报名成功'
           });
 
+          this.requireRefresh(1);
+
           setTimeout(function(){
             let pages = getCurrentPages();
 
@@ -125,6 +127,7 @@ Page({
 
             if(prevPage.data.activity&&prevPage.data.activity.participants){
               prevPage.data.activity.participants.push(participant);
+              prevPage.data.activity.numberJoined = prevPage.data.activity.numberJoined+1;
               prevPage.setData({ 
                 id:this.data.activityId,
                 activity : prevPage.data.activity
@@ -166,5 +169,10 @@ Page({
     this.setData({
       index: e.detail.value
     });
+  },
+  requireRefresh:function(deep){
+    var pages = getCurrentPages();
+    deep = ++deep;
+    pages[pages.length-deep].requireRefresh(deep);
   }
 });

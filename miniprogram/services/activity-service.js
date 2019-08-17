@@ -68,112 +68,72 @@ class ActivityService {
 
   find(condition,start,count,searchAll) {
 
+    lodash.forEach(condition,function(v,k){
+        if(!v){
+          delete condition[k];
+        }
+    });
+
     condition = lodash.clone(condition);
 
     return new Promise(function(resolve,reject){
-      this.preFind(condition,start,count,searchAll).
-          then(function(ids){
-
-            const db = wx.cloud.database();
-            let search = db.collection('activities');
-
-            const command = db.command;
-
-            if(condition.title){
-              condition.title = db.RegExp({
-                regexp: condition.title,
-                options: 'i',
-              })
-            }
-
-            switch(condition.search){
-              case 'singed':condition.status = command.lt(this.STATUS_ENDED);break;
-              case 'ended':condition.status = command.gte(this.STATUS_ENDED);break;
-              case 'published':
-                condition.status = command.lt(this.STATUS_ENDED);
-                search=search.orderBy('startDate','desc');
-              break;
-            }
-
-            condition.search = undefined;
-
-            if(condition.startDate){
-              condition.startDate = command.gte(condition.startDate);
-            }
-
-            if(condition.endDate){
-              condition.endDate = command.lte(condition.endDate);
-            }
-            
-            search=condition?search.where(condition):search;
-            search=start?search.skip(start):search;
-            search=count?search.limit(count):search;
-            search=searchAll?search.orderBy('updateDate','desc'):search;
-
-            if(ids&&ids.length>0){
-              condition._id = command.in(ids);
-            }
-          
-            return search.get({
-              success: function(res){
-                  resolve(res.data);
-              }.bind(this),
-              fail: err => {
-                console.error('[数据库] [查询记录] 失败：', err);
-                reject(err);
-              }
-            });
-
-          }.bind(this)).
-          catch(function(err){
-            reject(err);
-          });
-    }.bind(this));
-
-  }
-
-  preFind(condition,start,count,searchAll){
-    return new Promise(function(resolve,reject){
-
-      const preCondition = {};
-
-      if(app.globalData.userInfo&&app.globalData.userInfo._id){
-        preCondition.userId = app.globalData.userInfo._id;
-      }else{
-        reject('用户信息还没加载，无法进行互动查询');
-      }
-
       const db = wx.cloud.database();
-
-      let search = db.collection('signup_records').field({
-        activityId:true
-      });
+      let search = db.collection('activities');
 
       const command = db.command;
 
-      search=search.where(preCondition);
-
-      if(searchAll || (condition.search!='singed'&&condition.search!='ended')) {
-        resolve([]);
-        return;
+      if(condition.title){
+        condition.title = db.RegExp({
+          regexp: condition.title,
+          options: 'i',
+        })
       }
 
+      switch(condition.search){
+        case 'singed':condition.status = command.lt(this.STATUS_ENDED);break;
+        case 'ended':condition.status = command.gte(this.STATUS_ENDED);break;
+        case 'published':
+          searchAll=true;
+          condition.status = command.lt(this.STATUS_ENDED);
+          search=search.orderBy('startDate','desc');
+        break;
+      }
+
+      condition.search = undefined;
+
+      if(condition.startDate){
+        condition.startDate = command.gte(condition.startDate);
+      }
+
+      if(condition.endDate){
+        condition.endDate = command.lte(condition.endDate);
+      }
+      
+      if(!searchAll&&!condition._id){
+        if(app.globalData.userInfo&&app.globalData.userInfo._id){
+          condition['participants._id']=command.eq(app.globalData.userInfo._id);
+        }else{
+          reject('用户信息还没加载，无法进行互动查询');
+        }
+      }
+
+      search=condition?search.where(condition):search;
+      search=start?search.skip(start):search;
+      search=count?search.limit(count):search;
+      search=searchAll?search.orderBy('updateDate','desc'):search;
+
+    
       return search.get({
         success: function(res){
-          const ids=[];
-          res.data.reduce(function(result,item){
-            result.push(item.activityId);
-            return result;
-          },ids);
-          resolve(ids);
+            resolve(res.data);
         }.bind(this),
         fail: err => {
           console.error('[数据库] [查询记录] 失败：', err);
           reject(err);
         }
-      });
+      });           
+    }.bind(this));
 
-    });
   }
 
   getById(id) {
@@ -249,59 +209,90 @@ class ActivityService {
 
   signup(activityId,participant){
     return new Promise(function(resolve,reject){
+
       const db = wx.cloud.database();
+      const command = db.command;
 
-      const signupRecord = lodash.extend({},{activityId:activityId},participant);
-      signupRecord._id = undefined;
-      signupRecord.userId = participant._id;
-      signupRecord.languare = undefined;
-      signupRecord.type = undefined;
-      signupRecord._openid = undefined;
-      signupRecord.attended=false;
+      this.find({
+        "_id":activityId,
+        "participants._id":command.eq(app.globalData.userInfo._id)
+      }).then(function(activities){
+        let participantJoined
+        
+        participantJoined = lodash.find(activities[0]?activities[0].participants:[],function(participant){
+          return participant!=null&& participant._id == app.globalData.userInfo._id;
+        });          
+        
+        if(!participantJoined){
+          participant = lodash.clone(participant);
 
-      db.collection('signup_records').add({
-        data: signupRecord,
-        success: res => {
-          if(res._id){
-            resolve({
-              success:true,
-              message:'用户'+participant.name+'报名成功'
-            })
-          }
-        },
-        fail: err => {
-          let message = '报名失败';
-          if(err.errCode==-502001){
-            message = '用户[ '+participant.name+' ]已经报名该活动，无法重复报名'
-          }
+          wx.cloud.callFunction({
+            name: "signup",
+            data: {
+              _id: activityId,
+              participant:participant,
+              index:undefined
+            },
+            success: res => {
+              if(res.result.stats&&res.result.stats.updated>0){
+                resolve({
+                  success:true,
+                  message:'用户'+participant.name+'报名成功'
+                });   
+              }else{
+                reject({
+                  success:false,
+                  message:'报名失败,可能人数已满'
+                })
+              }
+                     
+            },
+            fail: err => {
+              reject({
+                success:false,
+                message:'报名失败'
+              });
+            }
+          });
+        }else{
+          let message = '用户[ '+participant.name+' ]已经报名该活动，无法重复报名';
+          wx.showToast({
+            title:message,
+            icon: 'none'
+          });
           reject({
             success:false,
             message:message
-          })
+          });
         }
-      });
-    });
+      });      
+    }.bind(this));
   }
 
-  updateSignup(signupRecord){
+  updateSignup(activityId,userId,index){
     return new Promise(function(resolve,reject){
       const db = wx.cloud.database();
-
-      const _id = signupRecord._id;
-      signupRecord._id=undefined;
-      signupRecord = lodash.clone(signupRecord);
 
       wx.cloud.callFunction({
         name: "updateSignup",
         data: {
-          _id : _id,
-          signupRecord : signupRecord
+          activityId : activityId,
+          userId : userId,
+          index:index
         },
         success: res => {
-          resolve({
-            success:true,
-            message:'更新报名信息成功'
-          });
+          if(res.result.stats&&res.result.stats.updated){
+            resolve({
+              success:true,
+              message:'更新报名信息成功'
+            });
+          }else{
+            reject({
+              success:false,
+              message:'更新报名信息失败'
+            });
+          }
+          
         },
         fail: err => {
           reject({
@@ -313,18 +304,27 @@ class ActivityService {
     });
   }
 
-  signout(_id){
+  signout(activityId,userId,index){
     return new Promise(function(resolve,reject){
       wx.cloud.callFunction({
         name: "signout",
         data: {
-          _id: _id,
+          activityId: activityId,
+          userId:userId,
+          index:index
         },
         success: res => {
-          resolve({
-            success:true,
-            message:'成功'
-          });
+          if(res.result.stats&&res.result.stats.updated>0){
+            resolve({
+              success:true,
+              message:'成功'
+            });
+          }else{
+            reject({
+              success:false,
+              message:'无法更新活动记录'
+            });
+          } 
         },
         fail: err => {
           reject({

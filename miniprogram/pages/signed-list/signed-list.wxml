@@ -14,17 +14,17 @@
 </view>
 <hr/>
 <block wx:for="{{participants}}" wx:key="keys">
-  <view wx:if="{{((onlyUnattended && !item.isAttended)||!onlyUnattended) && util.regexTest(item.name,searchByName)}}" style="position:relative;" >
+  <view wx:if="{{item!=null && ((onlyUnattended && !item.isAttended)||!onlyUnattended) && util.regexTest(item.name,searchByName)}}" style="position:relative;" >
     <view style="height:116rpx;" class="participant">
         <image src="{{item.avatarUrl}}" style="height:100rpx;width:100rpx;min-width:100rpx;margin-right:20rpx;"></image>
         <view style="font-size:12px" class="intro">
           <view class="list-item-title" >{{item.name}}{{item.isAttended?'(已签到)':'(未签到)'}}</view>
         </view>
           <view class="actions">   
-            <navigator url="/pages/signup/signup?userId={{item.userId}}&action=view" wx:if="{{userInfo._id==item.userId||isAdmin}}" class="btn action" >查看</navigator>
-            <button id="{{item._id}}" data-desc="退出活动" bindtap="signout" wx:if="{{userInfo._id==item.userId}}" class="btn action" >退出</button>
-            <button id="{{item._id}}" bindtap="signin" wx:if="{{isAdmin&&!item.isAttended}}" class="btn action" bindtap="setAttendance" >签到</button>
-            <button id="{{item._id}}" data-desc="踢除" bindtap="signout" wx:if="{{isAdmin}}" class="btn action" >踢除</button>
+            <navigator url="/pages/signup/signup?userId={{item._id}}&action=view" wx:if="{{userInfo._id==item._id||isAdmin}}" class="btn action" >查看</navigator>
+            <button data-activity-id="{{activityId}}" data-user-id="{{item._id}}" data-desc="退出活动" bindtap="signout" wx:if="{{userInfo._id==item._id}}" class="btn action" >退出</button>
+            <button data-activity-id="{{activityId}}" data-user-id="{{item._id}}" bindtap="signin" wx:if="{{isAdmin&&!item.isAttended}}" class="btn action" bindtap="setAttendance" >签到</button>
+            <button data-activity-id="{{activityId}}" data-user-id="{{item._id}}" data-desc="踢除" bindtap="signout" wx:if="{{isAdmin}}" class="btn action" >踢除</button>
           </view>
     </view>
   </view>

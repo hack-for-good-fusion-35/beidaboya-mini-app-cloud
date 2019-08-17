@@ -33,7 +33,8 @@ Page({
     }
 
     this.setData({
-      participants:this.detailPage.data.activity.participants
+      participants:this.detailPage.data.activity.participants,
+      activityId:this.detailPage.data.activity._id,
     });
 
   },
@@ -47,9 +48,9 @@ Page({
     });
   },
   signout: function(e){
-    
     const desc = e.target.dataset.desc;
-    const id = e.target.id;
+    const userId = e.target.dataset.userId;
+    const activityId = e.target.dataset.activityId;
     wx.showModal({
       title: '确定'+desc,
       success:function(res){
@@ -60,21 +61,26 @@ Page({
             mask: true
           });
 
-          activityService.signout(id).then(function(){
+          var index=undefined;
+
+          this.data.participants.forEach(function(participant,i){
+              if(participant&&participant._id==userId){
+                index = i;  
+                return true;
+              }
+            }.bind(this));
+          
+          activityService.signout(activityId,userId,index).then(function(){
             wx.showToast({
               icon:'none',
               title:desc+'成功'
             });
             wx.hideLoading();
 
-            this.data.participants.forEach(function(v,index){
+            this.requireRefresh(1);
 
-              if(v._id==id){
-                this.data.participants.splice(index,1);
-                return true;
-              }
-            }.bind(this));
-
+            this.data.participants.splice(index,1);
+            this.detailPage.data.activity.numberJoined=this.detailPage.data.activity.numberJoined -1;
             this.detailPage.data.activity.participants = this.data.participants;
 
             this.detailPage.setData({
@@ -100,17 +106,17 @@ Page({
     })
   },
   setAttendance:function(e){
-    const id = e.target.id;
-  
-    const target = _.find(this.data.participants,function(o){
-      return o._id === id;
-    });
-    target.isAttended=true;
+    const activityId = e.target.dataset.activityId;
+    const userId = e.target.dataset.userId;
     
-    activityService.updateSignup({
-      _id:id,
-      isAttended:target.isAttended
-    }).then(function(res){
+    var index;
+    const target = _.find(this.data.participants,function(o,i){
+      index = i;
+      return o && o && o._id === userId;
+    });
+    
+    activityService.updateSignup(activityId,userId,index).then(function(res){
+      target.isAttended=true;
       this.setData({
         participants:this.data.participants
       });
@@ -138,6 +144,7 @@ Page({
   },
   exportToClicpboard:function(e){
     let data = this.data.participants.reduce(function(result,p){
+        if(!p)return result;
         return result+=p.name+','+(p.gender==1?'男':'女')+','+p.age+','+p.mobile+','+
         p.job+','+
         p.nationalId+','+
@@ -158,5 +165,10 @@ Page({
         })
       }
     })
+  },
+  requireRefresh:function(deep){
+    var pages = getCurrentPages();
+    deep = ++deep;
+    pages[pages.length-deep].requireRefresh(deep);
   }
 })

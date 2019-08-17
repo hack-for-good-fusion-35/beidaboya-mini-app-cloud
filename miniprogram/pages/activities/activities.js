@@ -130,6 +130,12 @@ var pageConfig = {
     wx.navigateTo({
       url: e.target.dataset.url
     })
+  },
+  requireRefresh:function(){
+    var pages = getCurrentPages();
+    this.setData({
+      willRefresh:true
+    })
   }
 }
 
