@@ -26,12 +26,48 @@
   display: flex;
   align-items: center;
   border-bottom: 1px solid #dcdcdc;
-  margin-left: 22rpx;
+  margin-left: 20rpx;
 }
 
-.activity > image{
+.activity > view {
+  display:flex;
+  align-items: center;
+}
+
+.activity > .list-cover{
+  
+}
+
+.activity > .list-cover > image{
   border:1rpx solid #ddd;
   border-radius:15rpx;
+  height:172rpx;
+  width:200rpx;
+}
+
+.activity > .list-contents{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size:12px;
+  flex-direction:column;
+  padding: 10rpx;
+  box-sizing: border-box;
+  min-width:0rpx;
+}
+
+.activity > .list-contents >view{
+  width: 100%;
+}
+
+.liet-item-buttons{
+  display:flex;
+}
+
+.liet-item-buttons > button{
+  margin-left:5rpx;
+  display: inline-block;
 }
 
 .list-item-title{
@@ -42,9 +78,17 @@
 .list-item-content{
   font-size:24rpx; 
   color:#686868;
-  //white-space:nowrap;
+  white-space:nowrap;
   text-overflow:ellipsis;
   overflow:hidden;
+  min-width:0px;
+}
+
+.list-item-bottom{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  margin-top: 3rpx;
 }
 
 .intro-warp {

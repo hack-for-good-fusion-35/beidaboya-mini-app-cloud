@@ -47,7 +47,7 @@ Page({
       canSubmit:true
     });
   },
-  signout: function(e){
+  signout: function(e){ 
     const desc = e.target.dataset.desc;
     const userId = e.target.dataset.userId;
     const activityId = e.target.dataset.activityId;
@@ -69,7 +69,7 @@ Page({
                 return true;
               }
             }.bind(this));
-          
+      
           activityService.signout(activityId,userId,index).then(function(){
             wx.showToast({
               icon:'none',
@@ -79,7 +79,7 @@ Page({
 
             this.requireRefresh(1);
 
-            this.data.participants.splice(index,1);
+            this.data.participants[index]=null;
             this.detailPage.data.activity.numberJoined=this.detailPage.data.activity.numberJoined -1;
             this.detailPage.data.activity.participants = this.data.participants;
 

@@ -43,8 +43,27 @@
 
 <block wx:for="{{activities}}" wx:key="keys">
   <navigator style="position:relative;" url="/pages/activities/detail/detail?_id={{item._id}}">
-    <view style="height:216rpx;" class="activity">
-      <image src="{{item.images[0]}}" style="height:172rpx;width:200rpx;"></image>
+    <view class="activity">
+      <view class="list-cover">
+        <image src="{{item.images[0]}}" ></image>
+      </view>
+      <view class="list-contents">
+          <view class="list-item-title" >{{item.title}}</view>
+          <view class="list-item-content"><span>地址:</span>{{item.address}}</view>
+          <view class="list-item-content"><span>活动内容:</span></view>
+          <view class="list-item-content"><span>{{item.description}}</span></view>
+          <view class="list-item-content list-item-bottom">
+            需要人数：{{item.numberLimit-item.numberJoined}}
+            <view class="liet-item-buttons">
+              <button catchtap="navigate" data-url="/pages/publish/publish?_id={{item._id}}" class="btn" >编辑</button>  
+              <button catchtap="navigate" data-url="/pages/signup/signup?id={{item._id}}&&action=save" class="btn" disabled="{{(item.numberLimit-item.numberJoined)==0}}" >报名</button>
+            </view>
+          </view>
+      </view>
+      
+      
+      
+      <!-- <image src="{{item.images[0]}}" style="height:172rpx;width:200rpx;"></image>
       <view class="intro-warp">
         <view style="font-size:12px" class="intro">
           <view class="list-item-title" >{{item.title}}</view>
@@ -64,7 +83,7 @@
           </view>
 
         </view>
-      </view>
+      </view> -->
     </view>
   </navigator>
 </block>
