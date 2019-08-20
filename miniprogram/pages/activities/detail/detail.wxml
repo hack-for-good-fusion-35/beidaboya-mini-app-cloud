@@ -1,12 +1,13 @@
 <image src="{{activity.images[0]}}" class="filter"></image>
 <view class="head">
+  <view class="mTitle">{{activity.title}}</view>
   <view class="cover">
+    
     <navigator url="" class="cover">
-      <image src="{{activity.images[0]}}" style="width:290rpx;height:290rpx;"></image>
+      <image src="{{activity.images[0]}}" style="width:240rpx;height:240rpx;"></image>
     </navigator>
     <view class="jianjie">
       <view>
-        <view class="mTitle">{{activity.title}}</view>
         <view class="enName">{{activity.organizer.name}}</view>
       </view>
       <view class="rater">

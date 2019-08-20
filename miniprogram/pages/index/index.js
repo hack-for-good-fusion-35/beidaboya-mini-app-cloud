@@ -141,7 +141,7 @@ Page({
   },
   
   getUserInfoDetail(userInfo){
-    return userService.setUserInfo(userInfo).then(function(){
+    return userService.setUserInfo(userInfo).then(function(userInfo){
       this.setData({
         userInfo:app.globalData.userInfo
       });

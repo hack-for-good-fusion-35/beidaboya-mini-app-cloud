@@ -24,11 +24,11 @@ class UserService{
 
   setUserInfo(userInfo){
     return new Promise(function(resolve,reject){
-      let userInfo;
-      if(userInfo=wx.getStorage({
+      let cacheUserInfo;
+      if(cacheUserInfo=wx.getStorage({
         key: 'userInfo'
       })){
-        resolve(userInfo);
+        resolve(cacheUserInfo);
       }else{
         let openid = app.globalData.openid;
         if(!openid)throw 'openid 不能为空'
@@ -37,9 +37,13 @@ class UserService{
           _id: openid
         }).then(function(userInfos){
           if(userInfos.length<1){
-            userInfo._id = openid;
+            userInfo._id = app.globalData.openid;
             userInfo.type=NORMAL_USER;
-            return this.add(userInfo);//用户第一次授权会在数据中添加一条信息
+            return this.add(userInfo).then(function(res){
+              app.globalData.userInfo=userInfo;
+              event.emit('setUserInfo',userInfo);
+              resolve(userInfo);
+            });//用户第一次授权会在数据中添加一条信息
           }
           userInfo = userInfos[0];
           app.globalData.userInfo=userInfo;

@@ -1,7 +1,7 @@
 
 .tBar {
   margin: 28rpx 0 20rpx 28rpx;
-  font-size: 28rpx;
+  font-size: 34rpx;
 }
 
 .warp {
