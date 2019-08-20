@@ -55,7 +55,7 @@
           <view class="list-item-content list-item-bottom">
             需要人数：{{item.numberLimit-item.numberJoined}}
             <view class="liet-item-buttons">
-              <button catchtap="navigate" data-url="/pages/publish/publish?_id={{item._id}}" class="btn" >编辑</button>  
+              <button wx:if="{{isAdmin}}" catchtap="navigate" data-url="/pages/publish/publish?_id={{item._id}}" class="btn" >编辑</button>  
               <button catchtap="navigate" data-url="/pages/signup/signup?id={{item._id}}&&action=save" class="btn" disabled="{{(item.numberLimit-item.numberJoined)==0}}" >报名</button>
             </view>
           </view>
