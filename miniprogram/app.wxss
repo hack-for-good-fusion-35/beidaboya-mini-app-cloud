@@ -62,14 +62,14 @@
     padding: 0 0.35rem;
 }
 .form-edit .form-view text {
-  size:36rpx;
+  font-size: 32rpx;
 	width: 200rpx;
   text-align: justify;
   float: left;
 }
 .form-edit .form-view input,.form-edit .form-view picker,.form-edit .form-view textarea {
     height: 40rpx;
-    width: 11.5rem;
+    width: 70%;
     line-height: 40rpx;
     border: none;
     outline: none;
@@ -79,7 +79,7 @@
     display: inline-block;
 }
 .form-edit .form-view textarea{
-  height: 3.6rem;
+  height: 200rpx;
   margin-top:0.5rem;
 }
 

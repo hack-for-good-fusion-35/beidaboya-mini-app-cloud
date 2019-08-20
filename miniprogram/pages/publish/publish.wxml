@@ -47,7 +47,7 @@
 				</picker>
 	            <!-- <input name="endDate" placeholder="请输入结束时间" placeholder-style="color: #A0A0A0" value="{{endDate}}" bindinput="endDateInput" /> -->
 	        </view>
-			<view class="form-view" style="height: 4.4rem;">
+			<view class="form-view" style="height: 240rpx;">
 	            <text>描述</text>
 	            <textarea name="description" maxlength="255" placeholder="请输入描述" placeholder-style="color: #A0A0A0;"  value="{{form.description}}" bindinput="descriptionInput" />
 	        </view>
