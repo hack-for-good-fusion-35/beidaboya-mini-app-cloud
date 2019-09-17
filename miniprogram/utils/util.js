@@ -62,59 +62,64 @@ function validateForm(target,formFields){
 
 function initForm(page,target,formFields){
   
-  formFields.forEach(function(field,index){  
-    const value = target[field.name];
-    if(value){
-      if(field.type=='picker'){
-        const result = _.find(field.values,function(o){
-          return o.value == value;
-        });
-        if(!result){
-          throw '无法从选项中找到value=' + value+ "的项"
+    formFields.forEach(function(field,index){  
+      const value = target[field.name];
+      if(value){
+        if(field.type=='picker'){
+          const result = _.find(field.values,function(o){
+            return o.value == value;
+          });
+          
+          if(!result){
+            throw '无法为'+field.name+ '从选项'+ JSON.stringify(field.values) +'中找到' +'value=' + value+ "的项"
+          }
+          
+          field.text= result.text;
+        }else{
+          field.text = value;
         }
-        
-        field.text= result.text;
       }else{
-        field.text = value;
-      }
-    }else{
-      field.text = field.placeholder;
-    } 
-  });
+        field.text = field.placeholder;
+      } 
+    });
 
-  formFields.forEach(function(field,index){
-    if(field.type=='picker'){
-      this[field.name+'Input'] = function(e){
-        var key = field.name;
-        field.index = e.detail.value;
-        this.data['form'][key] = field['values'][field.index].value;
-        field.text = field['values'][field.index].text;
-        this.data.formFields[index]=field;
-        this.setData({
-          'formFields':this.data.formFields
-        })      
+    formFields.forEach(function(field,index){
+      try{
+        if(field.type=='picker'){
+          this[field.name+'Input'] = function(e){
+            var key = field.name;
+            field.index = e.detail.value;
+            this.data['form'][key] = field['values'][field.index].value;
+            field.text = field['values'][field.index].text;
+            this.data.formFields[index]=field;
+            this.setData({
+              'formFields':this.data.formFields
+            })      
+          }
+        }else if(field.type=='date'){
+          this[field.name+'Input'] = function(e){
+            var key = field.name;
+            this.data['form'][key] = e.detail.value;
+            field['text'] = e.detail.value;
+            this.data.formFields[index]=field;
+            this.setData({
+              'formFields':this.data.formFields
+            })      
+          }
+        }else{
+          this[field.name+'Input'] = function(e){
+            var key = field.name;
+            this.data['form'][key] = e.detail.value;
+          }
+        }
+      }catch(err){
+        throw '初始化表单项失败'+JSON.stringify(field) + err
       }
-    }else if(field.type=='date'){
-      this[field.name+'Input'] = function(e){
-        var key = field.name;
-        this.data['form'][key] = e.detail.value;
-        field['text'] = e.detail.value;
-        this.data.formFields[index]=field;
-        this.setData({
-          'formFields':this.data.formFields
-        })      
-      }
-    }else{
-      this[field.name+'Input'] = function(e){
-        var key = field.name;
-        this.data['form'][key] = e.detail.value;
-      }
-    }
-  }.bind(page));
+    }.bind(page));
 
-  page.setData({
-    'formFields':formFields
-  });
+    page.setData({
+      'formFields':formFields
+    });
 
 }
 

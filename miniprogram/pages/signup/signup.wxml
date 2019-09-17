@@ -51,6 +51,9 @@
 	            <text>个人地址</text>
 	            <input type="text" maxlength="60" disabled="{{!canEdit}}"  placeholder="请输入详细个人地址" value="{{form.address}}" bindinput="addressInput" />
 	        </view>
+
+			{{errorMessage}}
+
 	    </view>
 
 	   	<!-- <view class="operation">

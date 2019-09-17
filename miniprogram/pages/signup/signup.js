@@ -58,25 +58,38 @@ Page({
     loading: true,
     canSubmit:true,
     action:'save',
-    canEdit:true
+    canEdit:true,
+    errorMessage:''
   },
   onLoad(params) {
     var participant;
 
-    if(params.action!='view'){
-      participant = _.clone(app.globalData.userInfo);
-      canEdit=true;
-    }else{
-      const pages = getCurrentPages();
-      const signedListPage = pages[pages.length-2];
-      participant = _.clone(_.find(signedListPage.data.participants,function(o){
-        return o && o._id == params.userId
-      }));
-      canEdit=false;
+    try{
+      if(params.action!='view'){
+        participant = _.clone(app.globalData.userInfo);
+        canEdit=true;
+      }else{
+        const pages = getCurrentPages();
+        const signedListPage = pages[pages.length-2];
+        participant = _.clone(_.find(signedListPage.data.participants,function(o){
+          return o && o._id == params.userId
+        }));
+        canEdit=false;
+      }
+    }catch(errorMessage){
+      this.setData({
+        'errorMessage':'决定打开方式失败'+errorMessage
+      });
     }
 
-    util.initForm(this,participant,formFields);
-  
+    try{
+      util.initForm(this,participant,formFields);
+    } catch(errorMessage){
+      this.setData({
+        'errorMessage':errorMessage
+      })
+    }
+
     this.setData({
       form:participant,
       formFields:formFields,
