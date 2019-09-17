@@ -55,7 +55,7 @@
     </view>
   </scroll-view>
 </view>
-<view class="warp" style="height:278rpx;">
+<view class="warp" style="height:300rpx;">
   <view class="tBar">
     <view>活动照片</view>
     <view class="activities-number">{{activity.images.length}}</view>

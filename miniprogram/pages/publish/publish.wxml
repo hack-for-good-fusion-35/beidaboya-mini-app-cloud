@@ -56,7 +56,7 @@
 	            <input name="numberLimit" maxlength="5" type="number" placeholder="请输入招募人数" placeholder-style="color: #A0A0A0"  value="{{form.numberLimit}}" bindinput="numberLimitInput" />
 	        </view>
 	    </view>
-		<view class="warp" style="height:278rpx;">
+		<view class="warp" style="height:300rpx;">
 			<view class="tBar">
 				<view>活动照片</view>
 				<view class="activities-number">{{form.images.length}}</view>
