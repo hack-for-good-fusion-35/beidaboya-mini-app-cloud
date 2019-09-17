@@ -17,9 +17,9 @@
 			"outputPath": ""
 		}
 	},
-	"appid": "wx31e360a6e8fa1a56",
+	"appid": "wx580d06d6645384f3",
 	"projectname": "beidaboya-mini-app",
-	"libVersion": "2.8.0",
+	"libVersion": "2.8.2",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",

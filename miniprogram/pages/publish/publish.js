@@ -121,6 +121,7 @@ Page({
             canSubmit:true
           });
           
+          this.requireRefresh(1);
           // wx.navigateTo({
           //   url: '/pages/activities/activities?search=singed'
           // })
