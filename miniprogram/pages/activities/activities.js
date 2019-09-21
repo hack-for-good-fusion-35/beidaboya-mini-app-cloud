@@ -87,8 +87,13 @@ var pageConfig = {
   },
   loadActivities:function(){
 
+    wx.showLoading({
+      title: '正在加载列表',
+      mask: true
+    });
+
     activityService.find(this.data.form,this.data.start, this.data.counts,this.data.isAdmin).then(function(response) {
-      
+        wx.hideLoading();
         if(response.length<1||response.length<this.data.counts){
           this.setData({
             runOutOfData:true
