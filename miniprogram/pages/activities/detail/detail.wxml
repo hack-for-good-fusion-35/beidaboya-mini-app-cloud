@@ -81,5 +81,7 @@
 					</view> 
 			</scroll-view> 
 		</view>
-<button catchtap="navigate" data-url="../../signup/signup?id={{activity._id}}&&action=save" disabled="{{(activity.numberLimit-activity.numberJoined)==0}}" class="signup">立即报名</button>
+<button catchtap="navigate" 
+data-title="金花街社工服务站--活动报名"
+data-url="../../signup/signup?id={{activity._id}}&&action=save" disabled="{{(activity.numberLimit-activity.numberJoined)==0}}" class="signup">立即报名</button>
 <view style="height:100px;"></view>

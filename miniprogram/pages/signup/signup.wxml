@@ -29,16 +29,16 @@
 	            <text>职业</text>
 	            <input name="job" maxlength="10" disabled="{{!canEdit}}"  placeholder="请输入职业" placeholder-style="color: #A0A0A0"  value="{{form.job}}" bindinput="jobInput" />
 	        </view>
-			<view class="form-view">
+			<!-- <view class="form-view">
 	            <text>身份证号</text>
 	            <input name="nationalId" maxlength="18" disabled="{{!canEdit}}"  placeholder="请输入身份证号" placeholder-style="color: #A0A0A0"  value="{{form.nationalId}}" bindinput="nationalIdInput" />
-	        </view>
+	        </view> -->
 			<view class="form-view">
 	            <text>政治面貌</text>
 	            <!-- <input name="politicalStatus" maxlength="18" placeholder="请输入政治面貌" placeholder-style="color: #A0A0A0"  value="{{politicalStatus}}" bindinput="politicalStatusInput" /> -->
-	        	<picker bindchange="politicalStatusInput" disabled="{{!canEdit}}"  value="{{formFields[6]['index']}}" range="{{formFields[6]['values']}}" range-key="text" >
+	        	<picker bindchange="politicalStatusInput" disabled="{{!canEdit}}"  value="{{formFields[6]['index']}}" range="{{formFields[5]['values']}}" range-key="text" >
 					<view class="picker">
-						{{formFields[6]['text']}}
+						{{formFields[5]['text']}}
 					</view>
 				</picker>
 			</view>
@@ -47,10 +47,10 @@
 	            <input type="text" maxlength="60" disabled="{{!canEdit}}"  placeholder="请输入所属社区居委" value="{{form.liveCommittee}}" bindinput="liveCommitteeInput" />
 	        </view>
 
-	        <view class="form-view">
+	        <!-- <view class="form-view">
 	            <text>个人地址</text>
 	            <input type="text" maxlength="60" disabled="{{!canEdit}}"  placeholder="请输入详细个人地址" value="{{form.address}}" bindinput="addressInput" />
-	        </view>
+	        </view> -->
 
 			{{errorMessage}}
 

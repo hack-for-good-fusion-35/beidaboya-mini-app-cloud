@@ -147,13 +147,14 @@ Page({
         if(!p)return result;
         return result+=p.name+','+(p.gender==1?'男':'女')+','+p.age+','+p.mobile+','+
         p.job+','+
-        p.nationalId+','+
+        //p.nationalId+','+
         _.find(userService.getTypes(),function(o){
           return o.value==p.politicalStatus
         }).text+','+
         p.liveCommittee+','+
-        p.address+'\n';
-    },'姓名,性别,年龄,电话,职业,身份证号,政治面貌,所属居委会,个人地址\n');
+        //p.address+
+        '\n';
+    },'姓名,性别,年龄,电话,职业,政治面貌,所属居委会\n');
 
     wx.setClipboardData({
       'data':data,

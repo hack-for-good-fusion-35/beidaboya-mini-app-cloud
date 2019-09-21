@@ -30,11 +30,13 @@ const formFields = [{
   name:'job',
   description:'报名人职业',
   validates:['not-empty']
-},{
-  name:'nationalId',
-  description:'报名人身份证号',
-  validates:['nationalId']
-},{
+},
+// {
+//   name:'nationalId',
+//   description:'报名人身份证号',
+//   validates:['nationalId']
+// },
+{
   name:'politicalStatus',
   type:'picker',
   values:userService.getTypes(),
@@ -45,11 +47,13 @@ const formFields = [{
   name:'liveCommittee',
   description:'报名人所属社区居委会',
   validates:['not-empty']
-},{
-  name:'address',
-  description:'报名人个人地址',
-  validates:['not-empty']
-}]
+}
+// {
+//   name:'address',
+//   description:'报名人个人地址',
+//   validates:['not-empty']
+// }
+]
 
 Page({
   data: {
