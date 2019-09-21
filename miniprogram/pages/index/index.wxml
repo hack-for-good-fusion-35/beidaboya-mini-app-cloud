@@ -1,10 +1,20 @@
 <modal hidden="{{userInfo}}" title="请授权获取您的微信昵称" confirm-text="" cancel-text="" bindcancel="" bindconfirm="">
+  <view style="flex-direction: row;display:flex;">
   <button 
       open-type="getUserInfo" 
       bindgetuserinfo="onGetUserInfo"
       class="userinfo-avatar"
-      style="background-color:#f76968;color:white"
->点击授权</button>
+      style="background-color:#f76968;color:white;width:50%;"
+  >
+    点击授权
+  </button>
+  <button 
+      bindtap="refuceGetUserInfo"
+      style="width:45%;"
+  >
+    拒绝授权
+  </button>
+  </view>
 </modal>
 
 <view

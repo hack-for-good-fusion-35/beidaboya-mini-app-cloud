@@ -139,6 +139,20 @@ Page({
       this.getUserInfoDetail(e.detail.userInfo);
     }
   },
+
+  refuceGetUserInfo: function(e){
+    wx.showModal({
+      title: '是否拒绝授权?',
+      content: '请注意拒绝授权将无法使用所有功能',
+      success: function (res) {
+        if (res.confirm) {
+          this.setData({
+            userInfo:{}
+          })
+        }
+      }.bind(this)
+    })
+  },
   
   getUserInfoDetail(userInfo){
     return userService.setUserInfo(userInfo).then(function(userInfo){
