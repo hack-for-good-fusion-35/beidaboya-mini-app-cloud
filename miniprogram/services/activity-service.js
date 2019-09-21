@@ -39,7 +39,7 @@ class ActivityService {
       {
         value: "6",
         text: "社区志愿服务",
-        covers_image: "../../static/images/zhiyuanzhe.jpeg"
+        covers_image: "../../static/images/zhiyuanzhe.png"
       }
     ];
 
