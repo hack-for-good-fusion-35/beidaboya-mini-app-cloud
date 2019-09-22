@@ -11,8 +11,12 @@ Page({
   },
  
   onLoad: function (param) {
-    var id=param._id;
+    this.setData({
+      userInfo:app.globalData.userInfo
+    });
 
+    var id=param._id;
+    
     this.doOnload(id);
     
     event.on('getUserInfo',this,function(userInfo){
