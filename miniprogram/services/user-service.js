@@ -2,8 +2,6 @@ const _ = require('../utils/lodash.js')
 const util = require('../utils/util.js')
 const event = require('../utils/event')
 
-const app = getApp()
-
 var SUPER_ADMIN=1;
 var ADMIN=2;
 var NORMAL_USER=3;
@@ -15,14 +13,16 @@ class UserService{
   }
 
   isAdmin(){
+    const app = getApp();
     return app.globalData.userInfo && app.globalData.userInfo.type && app.globalData.userInfo.type!=NORMAL_USER;
   }
 
   isSuperAdmin(){
+    const app = getApp();
     return app.globalData.userInfo && app.globalData.userInfo.type && app.globalData.userInfo.type==SUPER_ADMIN;
   }
 
-  setUserInfo(userInfo){
+  setUserInfo(userInfo,app){
     return new Promise(function(resolve,reject){
       let cacheUserInfo;
       if(cacheUserInfo=wx.getStorage({
