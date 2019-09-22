@@ -151,7 +151,7 @@ Page({
         _.find(userService.getTypes(),function(o){
           return o.value==p.politicalStatus
         }).text+','+
-        p.liveCommittee+','+
+        p.liveCommittee+
         //p.address+
         '\n';
     },'姓名,性别,年龄,电话,职业,政治面貌,所属居委会\n');
