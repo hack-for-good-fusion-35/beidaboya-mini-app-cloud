@@ -1,43 +1,60 @@
 const app = getApp()
 const activityService = require('/../../../services/activity-service.js')
 const _ = require('../../../utils/lodash')
+const event = require('../../../utils/event')
 
 Page({
   data: {
+    userInfo:app.globalData.userInfo,
     activity: {},
     flexed: false
   },
  
   onLoad: function (param) {
-  var id=param._id;
+    var id=param._id;
 
-   wx.showLoading({
-    title: '正在加载活动内容',
-    mask: true
-  });
-
-   activityService.getById(id).then(function(response){
-    wx.hideLoading();
-    response.statusText=_.find(activityService.getStatus(),function(o){
-      return o.value==response.status;
-     }).text;
-  
-     response.typeText = _.find(activityService.getTypes(),function(o){
-      return o.value==response.type;
-     }).text;
-  
-     this.setData({
-        activity: response
-     });
+    this.doOnload(id);
     
-   }.bind(this)).
-   catch(function(){
+    event.on('getUserInfo',this,function(userInfo){
+      this.setData({
+        userInfo: userInfo
+      });
+      this.doOnload(id);
+    });
+  },
+  
+  doOnload: function(id){
+    if(this.data.userInfo===true){
+      return;
+    }
+
+    wx.showLoading({
+      title: '正在加载活动内容',
+      mask: true
+    });
+  
+    activityService.getById(id).then(function(response){
       wx.hideLoading();
-      wx.showToast({
-        title: '获取活动详情失败',
-        icon: 'none'
-      })
-   });  
+      response.statusText=_.find(activityService.getStatus(),function(o){
+        return o.value==response.status;
+       }).text;
+    
+       response.typeText = _.find(activityService.getTypes(),function(o){
+        return o.value==response.type;
+       }).text;
+    
+       this.setData({
+          activity: response
+       });
+      
+     }.bind(this)).
+     catch(function(){
+        wx.hideLoading();
+        wx.showToast({
+          title: '获取活动详情失败',
+          icon: 'none'
+        })
+     });
   },
   imgPreview:function(event){
     var src = event.currentTarget.dataset.src;//获取data-src
@@ -74,7 +91,20 @@ Page({
   },
   requireRefresh:function(deep){
     deep = ++deep;
-    var pages = getCurrentPages();
-    pages[pages.length-deep].requireRefresh(deep);
+    const pages = getCurrentPages();
+    const previousPage = pages[pages.length-deep];
+    if(pages && previousPage){
+      const requireRefresh = previousPage.requireRefresh;
+      if(requireRefresh){
+        requireRefresh(deep);
+      }    
+    }
+  },
+  onGetUserInfo: function (e) {
+    return app.onGetUserInfo(e);
+  },
+
+  refuceGetUserInfo: function(e){
+    return app.refuceGetUserInfo(e);
   }
-})
+});

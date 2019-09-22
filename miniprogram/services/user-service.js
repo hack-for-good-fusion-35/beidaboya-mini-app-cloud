@@ -64,6 +64,7 @@ class UserService{
   }
 
   updateIfDiff(userInfo){
+    const app = getApp();
     return new Promise(function(resolve,reject){
         let diffFields = util.diff(userInfo,app.globalData.userInfo)
         if(!_.isEmpty(diffFields)){
@@ -73,7 +74,7 @@ class UserService{
   }
 
   update(userInfo,updateFields){
-
+    const app = getApp();
     if(!updateFields){
       updateFields = userInfo
     }
@@ -118,7 +119,7 @@ class UserService{
   }
 
   isLogged(){
-    return app.globalData.userInfo;
+    return getApp().globalData.userInfo;
   }
 
   getTypes(){

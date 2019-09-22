@@ -357,9 +357,15 @@ Page({
     }.bind(this));
   },
   requireRefresh:function(deep){
-    var pages = getCurrentPages();
     deep = ++deep;
-    pages[pages.length-deep].requireRefresh(deep);
+    const pages = getCurrentPages();
+    const previousPage = pages[pages.length-deep];
+    if(pages && previousPage){
+      const requireRefresh = previousPage.requireRefresh;
+      if(requireRefresh){
+        requireRefresh(deep);
+      }    
+    }
   }
 
 });
