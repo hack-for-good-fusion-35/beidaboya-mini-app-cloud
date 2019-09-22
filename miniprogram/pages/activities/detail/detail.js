@@ -86,12 +86,7 @@ Page({
   navigate:function(e){
     wx.navigateTo({
       url: e.target.dataset.url
-    })
-    if (e.target.dataset.title){
-      wx.setNavigationBarTitle({
-        title: e.target.dataset.title
-      })
-    }    
+    })  
   },
   requireRefresh:function(deep){
     deep = ++deep;

@@ -66,6 +66,11 @@ Page({
     errorMessage:''
   },
   onLoad(params) {
+
+    wx.setNavigationBarTitle({
+      title: '金花街社工服务站--活动报名'
+    });
+
     var participant;
 
     try{
